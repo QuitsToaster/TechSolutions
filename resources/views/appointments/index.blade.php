@@ -17,15 +17,24 @@
     </div>
 
     <!-- Search / Filter -->
-    <div class="bg-white border rounded-xl p-4">
+    <div
+        class="
+            bg-white
+            border
+            border-gray-200
+            rounded-xl
+            p-5
+            mt-6
+        "
+    >
         <form method="GET" action="{{ route('appointments.index') }}" class="grid grid-cols-1 md:grid-cols-3 gap-3">
             <input type="text" 
                    name="search" 
                    value="{{ request('search') }}" 
                    placeholder="Search customer, device or service..." 
-                   class="border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none">
+                   class="border border-gray-200 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none">
             
-            <select name="status" class="border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none">
+            <select name="status" class="border border-gray-200 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-gray-900 focus:border-transparent outline-none">
                 <option value="">All Status</option>
                 @foreach(['pending', 'confirmed', 'in_progress', 'completed', 'cancelled'] as $status)
                     <option value="{{ $status }}" {{ request('status') === $status ? 'selected' : '' }}>
@@ -41,10 +50,17 @@
     </div>
 
     <!-- Appointment Table -->
-    <div class="bg-white border rounded-xl overflow-hidden">
+    <div class="
+            bg-white
+            border
+            border-gray-200
+            rounded-xl
+            mt-6
+            overflow-hidden
+        ">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
-                <thead class="bg-gray-50 border-b">
+                <thead class="bg-gray-50">
                     <tr>
                         <th class="text-left px-6 py-3 font-semibold text-gray-600">Customer</th>
                         <th class="text-left px-6 py-3 font-semibold text-gray-600">Appointment</th>
@@ -54,7 +70,7 @@
                         <th class="text-right px-6 py-3 font-semibold text-gray-600">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y">
+                <tbody class="divide-y divide-gray-100">
                     @forelse($appointments as $appointment)
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4">

@@ -19,7 +19,7 @@
 
     <form action="{{ route('appointments.store') }}"
           method="POST"
-          class="bg-white border rounded-xl p-6 space-y-6">
+          class="bg-white border border-gray-200 rounded-xl p-6 space-y-6">
 
         @csrf
 
@@ -34,7 +34,7 @@
             <select
                 name="customer_id"
                 required
-                class="w-full border rounded-lg px-4 py-2">
+                class="w-full border border-gray-200 rounded-lg px-4 py-2">
 
                 <option value="">
                     Select Customer
@@ -78,7 +78,7 @@
                     name="appointment_date"
                     value="{{ old('appointment_date') }}"
                     required
-                    class="w-full border rounded-lg px-4 py-2">
+                    class="w-full border border-gray-200 rounded-lg px-4 py-2">
 
             </div>
 
@@ -93,7 +93,7 @@
                     type="time"
                     name="appointment_time"
                     value="{{ old('appointment_time') }}"
-                    class="w-full border rounded-lg px-4 py-2">
+                    class="w-full border border-gray-200 rounded-lg px-4 py-2">
 
             </div>
 
@@ -112,7 +112,7 @@
                 <select
                     name="device_type"
                     required
-                    class="w-full border rounded-lg px-4 py-2">
+                    class="w-full border border-gray-200 rounded-lg px-4 py-2">
 
                     <option value="">Select Device</option>
                     <option value="iPhone">iPhone</option>
@@ -140,7 +140,7 @@
                     value="{{ old('device_model') }}"
                     placeholder="Example: iPhone 11"
                     required
-                    class="w-full border rounded-lg px-4 py-2">
+                    class="w-full border border-gray-200 rounded-lg px-4 py-2">
 
             </div>
 
@@ -160,7 +160,7 @@
                 value="{{ old('service') }}"
                 placeholder="Example: LCD Replacement"
                 required
-                class="w-full border rounded-lg px-4 py-2">
+                class="w-full border border-gray-200 rounded-lg px-4 py-2">
 
         </div>
 
@@ -176,7 +176,7 @@
                 name="problem_description"
                 rows="4"
                 placeholder="Describe the customer's problem..."
-                class="w-full border rounded-lg px-4 py-2">{{ old('problem_description') }}</textarea>
+                class="w-full border border-gray-200 rounded-lg px-4 py-2">{{ old('problem_description') }}</textarea>
 
         </div>
 
@@ -194,7 +194,7 @@
                 name="estimated_cost"
                 value="{{ old('estimated_cost') }}"
                 placeholder="₱0.00"
-                class="w-full border rounded-lg px-4 py-2">
+                class="w-full border border-gray-200 rounded-lg px-4 py-2">
 
         </div>
 
@@ -210,7 +210,7 @@
 
                 <select
                     name="status"
-                    class="w-full border rounded-lg px-4 py-2">
+                    class="w-full border border-gray-200 rounded-lg px-4 py-2">
 
                     <option value="pending">
                         Pending
@@ -245,7 +245,7 @@
 
                 <select
                     name="payment_status"
-                    class="w-full border rounded-lg px-4 py-2">
+                    class="w-full border border-gray-200 rounded-lg px-4 py-2">
 
                     <option value="unpaid">
                         Unpaid
@@ -277,7 +277,7 @@
                 name="notes"
                 rows="3"
                 placeholder="Additional notes..."
-                class="w-full border rounded-lg px-4 py-2">{{ old('notes') }}</textarea>
+                class="w-full border border-gray-200 rounded-lg px-4 py-2">{{ old('notes') }}</textarea>
 
         </div>
 

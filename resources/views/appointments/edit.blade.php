@@ -31,8 +31,8 @@
         @method('PUT')
 
         <!-- Customer Information -->
-        <div class="bg-white border rounded-xl overflow-hidden">
-            <div class="border-b px-6 py-4">
+        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+            <div class="border-b border-gray-200 px-6 py-4">
                 <h2 class="font-semibold text-gray-900">Customer Information</h2>
             </div>
             <div class="p-6">
@@ -56,8 +56,8 @@
         </div>
 
         <!-- Appointment Details -->
-        <div class="bg-white border rounded-xl overflow-hidden">
-            <div class="border-b px-6 py-4">
+        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+            <div class="border-b border-gray-200 px-6 py-4">
                 <h2 class="font-semibold text-gray-900">Appointment Details</h2>
             </div>
             <div class="grid gap-6 p-6 md:grid-cols-2">
@@ -140,8 +140,8 @@
         </div>
 
         <!-- Problem & Cost -->
-        <div class="bg-white border rounded-xl overflow-hidden">
-            <div class="border-b px-6 py-4">
+        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+            <div class="border-b border-gray-200 px-6 py-4">
                 <h2 class="font-semibold text-gray-900">Problem & Cost</h2>
             </div>
             <div class="space-y-6 p-6">
@@ -178,8 +178,8 @@
         </div>
 
         <!-- Status & Payment -->
-        <div class="bg-white border rounded-xl overflow-hidden">
-            <div class="border-b px-6 py-4">
+        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+            <div class="border-b border-gray-200 px-6 py-4">
                 <h2 class="font-semibold text-gray-900">Status & Payment</h2>
             </div>
             <div class="grid gap-6 p-6 md:grid-cols-2">
@@ -222,8 +222,8 @@
         </div>
 
         <!-- Notes -->
-        <div class="bg-white border rounded-xl overflow-hidden">
-            <div class="border-b px-6 py-4">
+        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+            <div class="border-b border-gray-200 px-6 py-4">
                 <h2 class="font-semibold text-gray-900">Notes</h2>
             </div>
             <div class="p-6">

@@ -39,8 +39,8 @@
         <!-- Main Information -->
         <div class="lg:col-span-2 space-y-6">
             <!-- Appointment Information -->
-            <div class="bg-white border rounded-xl overflow-hidden">
-                <div class="border-b px-6 py-4">
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <div class="border-b border-gray-200 px-6 py-4">
                     <h2 class="font-semibold text-gray-900">Appointment Information</h2>
                 </div>
                 <div class="grid gap-6 p-6 md:grid-cols-2">
@@ -86,8 +86,8 @@
             </div>
 
             <!-- Problem Description -->
-            <div class="bg-white border rounded-xl overflow-hidden">
-                <div class="border-b px-6 py-4">
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <div class="border-b border-gray-200 px-6 py-4">
                     <h2 class="font-semibold text-gray-900">Problem Description</h2>
                 </div>
                 <div class="p-6">
@@ -100,8 +100,8 @@
             </div>
 
             <!-- Notes -->
-            <div class="bg-white border rounded-xl overflow-hidden">
-                <div class="border-b px-6 py-4">
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <div class="border-b border-gray-200 px-6 py-4">
                     <h2 class="font-semibold text-gray-900">Notes</h2>
                 </div>
                 <div class="p-6">
@@ -117,8 +117,8 @@
         <!-- Sidebar -->
         <div class="space-y-6">
             <!-- Customer Information -->
-            <div class="bg-white border rounded-xl overflow-hidden">
-                <div class="border-b px-6 py-4">
+            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <div class="border-b border-gray-200 px-6 py-4">
                     <h2 class="font-semibold text-gray-900">Customer</h2>
                 </div>
                 <div class="space-y-5 p-6">
