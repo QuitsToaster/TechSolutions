@@ -25,5 +25,10 @@ Route::get('/repair-jobs', [RepairJobController::class, 'index'])
 Route::get('/repair-jobs/{repairJob}', [RepairJobController::class, 'show'])
     ->name('repair-jobs.show');
 
+Route::patch(
+    '/repair-jobs/{repairJob}/status',
+    [RepairJobController::class, 'updateStatus']
+)->name('repair-jobs.update-status');
+
 Route::post('/appointments/{appointment}/convert-to-repair-job', [RepairJobController::class, 'convertFromAppointment'])
     ->name('appointments.convert-to-repair-job');

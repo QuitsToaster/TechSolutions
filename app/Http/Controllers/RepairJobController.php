@@ -148,4 +148,119 @@ class RepairJobController extends Controller
 
         return $jobNumber;
     }
+
+    /**
+     * Update repair job status.
+     */
+    public function updateStatus(
+        Request $request,
+        RepairJob $repairJob
+    ) {
+        $validated = $request->validate([
+            'status' => [
+                'required',
+                'in:pending,diagnosing,waiting_for_parts,repairing,ready_for_pickup,released,on_hold,cancelled',
+            ],
+
+            'remarks' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+        ]);
+
+        $newStatus = $validated['status'];
+        $oldStatus = $repairJob->status;
+
+        /*
+        * Don't create another history record
+        * if the status hasn't changed.
+        */
+        if ($oldStatus === $newStatus) {
+            return back()->with(
+                'error',
+                'The repair job is already in this status.'
+            );
+        }
+
+        DB::transaction(function () use (
+            $repairJob,
+            $oldStatus,
+            $newStatus,
+            $validated
+        ) {
+
+            /*
+            * Update repair job status.
+            */
+            $repairJob->status = $newStatus;
+
+
+            /*
+            * Automatically set completed_at
+            * when the repair becomes ready for pickup.
+            */
+            if ($newStatus === 'ready_for_pickup') {
+                $repairJob->completed_at = now();
+            }
+
+
+            /*
+            * Automatically set released_at
+            * when the unit is released.
+            */
+            if ($newStatus === 'released') {
+                $repairJob->released_at = now();
+            }
+
+
+            /*
+            * If the job is moved away from
+            * ready for pickup, clear completed_at.
+            */
+            if (
+                $oldStatus === 'ready_for_pickup' &&
+                $newStatus !== 'ready_for_pickup'
+            ) {
+                $repairJob->completed_at = null;
+            }
+
+
+            /*
+            * If the job is moved away from
+            * released, clear released_at.
+            */
+            if (
+                $oldStatus === 'released' &&
+                $newStatus !== 'released'
+            ) {
+                $repairJob->released_at = null;
+            }
+
+
+            $repairJob->save();
+
+
+            /*
+            * Create status history.
+            */
+            RepairJobStatusHistory::create([
+                    'repair_job_id' => $repairJob->id,
+
+                    'old_status' => $oldStatus,
+
+                    'new_status' => $newStatus,
+
+                    'remarks' => $validated['remarks'] ?? null,
+
+                    'changed_by' => auth()->id(),
+                ]);
+            });
+
+
+            return back()->with(
+                'success',
+                'Repair job status updated successfully.'
+            );
+        }
 }

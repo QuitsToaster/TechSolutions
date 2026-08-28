@@ -291,6 +291,198 @@
         <div class="space-y-6">
 
 
+            <!-- Update Status -->
+
+            <div class="bg-white border rounded-xl overflow-hidden">
+
+                <div class="border-b px-6 py-4">
+
+                    <h2 class="font-semibold text-gray-900">
+                        Update Status
+                    </h2>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        Update the current repair progress.
+                    </p>
+
+                </div>
+
+
+                <div class="p-6">
+
+                    <form
+                        method="POST"
+                        action="{{ route('repair-jobs.update-status', $repairJob) }}"
+                        class="space-y-4"
+                    >
+
+                        @csrf
+
+                        @method('PATCH')
+
+
+                        <!-- Status -->
+
+                        <div>
+
+                            <label
+                                for="status"
+                                class="block text-sm font-medium text-gray-700 mb-2"
+                            >
+                                Repair Status
+                            </label>
+
+                            <select
+                                name="status"
+                                id="status"
+                                required
+                                class="
+                                    w-full
+                                    rounded-lg
+                                    border
+                                    border-gray-300
+                                    bg-white
+                                    px-3
+                                    py-2.5
+                                    text-sm
+                                    focus:border-slate-500
+                                    focus:ring-slate-500
+                                "
+                            >
+
+                                <option
+                                    value="pending"
+                                    @selected($repairJob->status === 'pending')
+                                >
+                                    Pending
+                                </option>
+
+                                <option
+                                    value="diagnosing"
+                                    @selected($repairJob->status === 'diagnosing')
+                                >
+                                    Diagnosing
+                                </option>
+
+                                <option
+                                    value="waiting_for_parts"
+                                    @selected($repairJob->status === 'waiting_for_parts')
+                                >
+                                    Waiting for Parts
+                                </option>
+
+                                <option
+                                    value="repairing"
+                                    @selected($repairJob->status === 'repairing')
+                                >
+                                    Repairing
+                                </option>
+
+                                <option
+                                    value="ready_for_pickup"
+                                    @selected($repairJob->status === 'ready_for_pickup')
+                                >
+                                    Ready for Pickup
+                                </option>
+
+                                <option
+                                    value="released"
+                                    @selected($repairJob->status === 'released')
+                                >
+                                    Released
+                                </option>
+
+                                <option
+                                    value="on_hold"
+                                    @selected($repairJob->status === 'on_hold')
+                                >
+                                    On Hold
+                                </option>
+
+                                <option
+                                    value="cancelled"
+                                    @selected($repairJob->status === 'cancelled')
+                                >
+                                    Cancelled
+                                </option>
+
+                            </select>
+
+                            @error('status')
+                                <p class="mt-1 text-xs text-red-600">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+
+                        </div>
+
+
+                        <!-- Remarks -->
+
+                        <div>
+
+                            <label
+                                for="remarks"
+                                class="block text-sm font-medium text-gray-700 mb-2"
+                            >
+                                Remarks
+                            </label>
+
+                            <textarea
+                                name="remarks"
+                                id="remarks"
+                                rows="3"
+                                placeholder="Optional status update notes..."
+                                class="
+                                    w-full
+                                    rounded-lg
+                                    border
+                                    border-gray-300
+                                    px-3
+                                    py-2.5
+                                    text-sm
+                                    resize-none
+                                    focus:border-slate-500
+                                    focus:ring-slate-500
+                                "
+                            >{{ old('remarks') }}</textarea>
+
+                            @error('remarks')
+                                <p class="mt-1 text-xs text-red-600">
+                                    {{ $message }}
+                                </p>
+                            @enderror
+
+                        </div>
+
+
+                        <!-- Submit -->
+
+                        <button
+                            type="submit"
+                            class="
+                                w-full
+                                px-4
+                                py-2.5
+                                rounded-lg
+                                bg-slate-900
+                                hover:bg-slate-800
+                                text-white
+                                text-sm
+                                font-medium
+                                transition
+                            "
+                        >
+                            Update Status
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
             <!-- Customer -->
 
             <div class="bg-white border rounded-xl overflow-hidden">
@@ -454,35 +646,154 @@
                         Status History
                     </h2>
 
+                    <p class="text-sm text-gray-500 mt-1">
+                        Track changes made to this repair job.
+                    </p>
+
                 </div>
+
 
                 <div class="p-6">
 
-                    <div class="space-y-5">
+                    <div class="space-y-6">
 
                         @forelse($repairJob->statusHistories->sortByDesc('created_at') as $history)
 
-                            <div>
+                            @php
 
-                                <p class="text-sm font-medium text-gray-900">
+                                $historyColors = [
+                                    'pending' => 'bg-yellow-100 text-yellow-800',
+                                    'diagnosing' => 'bg-blue-100 text-blue-800',
+                                    'waiting_for_parts' => 'bg-orange-100 text-orange-800',
+                                    'repairing' => 'bg-purple-100 text-purple-800',
+                                    'ready_for_pickup' => 'bg-green-100 text-green-800',
+                                    'released' => 'bg-gray-100 text-gray-800',
+                                    'on_hold' => 'bg-gray-100 text-gray-800',
+                                    'cancelled' => 'bg-red-100 text-red-800',
+                                ];
 
-                                    {{ ucfirst(str_replace('_', ' ', $history->new_status)) }}
+                            @endphp
 
-                                </p>
 
-                                <p class="text-xs text-gray-500 mt-1">
+                            <div class="relative pl-6">
 
-                                    {{ $history->created_at?->format('M d, Y h:i A') }}
+                                <!-- Timeline line -->
 
-                                </p>
+                                @if(!$loop->last)
 
-                                @if($history->remarks)
-
-                                    <p class="mt-2 text-sm text-gray-600">
-                                        {{ $history->remarks }}
-                                    </p>
+                                    <div class="absolute left-1.5 top-5 bottom-[-24px] w-px bg-gray-200"></div>
 
                                 @endif
+
+
+                                <!-- Timeline dot -->
+
+                                <div
+                                    class="
+                                        absolute
+                                        left-0
+                                        top-1.5
+                                        w-3
+                                        h-3
+                                        rounded-full
+                                        bg-slate-900
+                                        ring-4
+                                        ring-white
+                                    "
+                                ></div>
+
+
+                                <!-- Status -->
+
+                                <div>
+
+                                    <div class="flex flex-wrap items-center gap-2">
+
+                                        <span
+                                            class="
+                                                inline-flex
+                                                px-2.5
+                                                py-1
+                                                rounded-full
+                                                text-xs
+                                                font-semibold
+                                                {{ $historyColors[$history->new_status] ?? 'bg-gray-100 text-gray-800' }}
+                                            "
+                                        >
+                                            {{ ucfirst(str_replace('_', ' ', $history->new_status)) }}
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- Status transition -->
+
+                                    @if($history->old_status)
+
+                                        <p class="text-xs text-gray-500 mt-2">
+
+                                            From
+                                            <span class="font-medium text-gray-700">
+                                                {{ ucfirst(str_replace('_', ' ', $history->old_status)) }}
+                                            </span>
+
+                                            to
+
+                                            <span class="font-medium text-gray-700">
+                                                {{ ucfirst(str_replace('_', ' ', $history->new_status)) }}
+                                            </span>
+
+                                        </p>
+
+                                    @else
+
+                                        <p class="text-xs text-gray-500 mt-2">
+                                            Initial repair job status
+                                        </p>
+
+                                    @endif
+
+
+                                    <!-- Date -->
+
+                                    <p class="text-xs text-gray-400 mt-1">
+
+                                        {{ $history->created_at?->format('M d, Y h:i A') }}
+
+                                        @if($history->changedBy)
+
+                                            · {{ $history->changedBy->name }}
+
+                                        @endif
+
+                                    </p>
+
+
+                                    <!-- Remarks -->
+
+                                    @if($history->remarks)
+
+                                        <div
+                                            class="
+                                                mt-3
+                                                rounded-lg
+                                                bg-gray-50
+                                                border
+                                                border-gray-100
+                                                px-3
+                                                py-2.5
+                                            "
+                                        >
+
+                                            <p class="text-sm text-gray-600 whitespace-pre-line">
+                                                {{ $history->remarks }}
+                                            </p>
+
+                                        </div>
+
+                                    @endif
+
+                                </div>
 
                             </div>
 
