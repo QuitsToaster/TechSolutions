@@ -6,7 +6,6 @@ use App\Models\Appointment;
 use App\Models\Part;
 use App\Models\RepairJob;
 use App\Models\Order;
-use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -107,30 +106,77 @@ class DashboardController extends Controller
 
         $totalOrders = Order::count();
 
+  
         /*
         |--------------------------------------------------------------------------
         | Financial Statistics
         |--------------------------------------------------------------------------
         */
 
+        /*
+        * Monthly Revenue
+        *
+        * Only actual payments from released repairs
+        * released during the current month are included.
+        */
         $monthlyRevenue = RepairJob::where(
             'status',
             'released'
         )
             ->whereMonth('released_at', now()->month)
             ->whereYear('released_at', now()->year)
-            ->sum('final_cost');
+            ->sum('amount_paid');
 
 
-        $outstandingBalance = RepairJob::whereNotIn('status', [
-            'cancelled',
-        ])
-            ->select(
-                DB::raw(
-                    'COALESCE(SUM(GREATEST(final_cost - amount_paid, 0)), 0) as balance'
-                )
+        /*
+        * Repair Jobs Included in Monthly Revenue
+        *
+        * These are the actual repair jobs contributing
+        * to the Revenue This Month figure.
+        */
+        $monthlyRevenueJobs = RepairJob::with('customer')
+            ->where(
+                'status',
+                'released'
             )
-            ->value('balance');
+            ->whereMonth('released_at', now()->month)
+            ->whereYear('released_at', now()->year)
+            ->where('amount_paid', '>', 0)
+            ->orderByDesc('released_at')
+            ->get();
+
+
+        /*
+        * Outstanding Balance
+        *
+        * Get all non-cancelled repair jobs that still
+        * have an unpaid balance.
+        */
+        $outstandingBalanceJobs = RepairJob::with('customer')
+            ->whereNotIn('status', [
+                'cancelled',
+            ])
+            ->get()
+            ->filter(function ($repairJob) {
+                return $repairJob->balance > 0;
+            })
+            ->sortByDesc('updated_at')
+            ->values();
+
+
+        /*
+        * Total Outstanding Balance
+        */
+        $outstandingBalance = $outstandingBalanceJobs->sum(
+            function ($repairJob) {
+                return $repairJob->balance;
+            }
+        );
+
+
+
+
+
 
 
         /*
@@ -202,6 +248,9 @@ class DashboardController extends Controller
 
             'monthlyRevenue',
             'outstandingBalance',
+
+            'monthlyRevenueJobs',
+            'outstandingBalanceJobs',
 
             'recentRepairJobs',
             'readyForPickupJobs',

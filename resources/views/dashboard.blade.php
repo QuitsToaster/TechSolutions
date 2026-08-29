@@ -494,98 +494,430 @@
         </a>
 
 
-        {{-- ========================================================= --}}
-        {{-- FINANCIAL STAT CARDS --}}
-        {{-- ========================================================= --}}
+    
+{{-- ========================================================= --}}
+{{-- FINANCIAL STAT CARDS --}}
+{{-- ========================================================= --}}
 
-        <div class="lg:col-span-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div
+    class="lg:col-span-5 grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"
+    x-data="{
+        showRevenueModal: false,
+        showBalanceModal: false
+    }"
+>
 
-            {{-- Monthly Revenue --}}
+    {{-- ===================================================== --}}
+    {{-- MONTHLY REVENUE --}}
+    {{-- ===================================================== --}}
 
-            <div class="bg-white rounded-xl border border-gray-200 p-6
-                        hover:border-emerald-300 hover:shadow-sm transition">
+    <button
+        type="button"
+        @click="showRevenueModal = true"
+        class="
+            w-full
+            text-left
+            bg-white
+            rounded-xl
+            border
+            border-gray-200
+            p-6
+            hover:border-emerald-300
+            hover:shadow-md
+            transition
+            cursor-pointer
+        "
+    >
 
-                <div class="flex items-start justify-between">
+        <div class="flex items-start justify-between">
 
-                    <div>
+            <div>
 
-                        <p class="text-sm text-gray-500">
-                            Revenue This Month
-                        </p>
+                <p class="text-sm text-gray-500">
+                    Revenue This Month
+                </p>
 
-                        <p class="text-3xl font-bold text-gray-900 mt-3">
-                            ₱{{ number_format($monthlyRevenue, 2) }}
-                        </p>
+                <p class="text-3xl font-bold text-gray-900 mt-3">
+                    ₱{{ number_format($monthlyRevenue, 2) }}
+                </p>
 
-                        <p class="text-xs text-gray-400 mt-2">
-                            Total revenue from released repairs
-                        </p>
+                <p class="text-xs text-gray-400 mt-2">
+                    Payments received from released repairs
+                </p>
+
+                <p class="text-xs text-emerald-600 font-medium mt-3">
+                    Click to view repair details →
+                </p>
+
+            </div>
+
+
+            <div
+                class="
+                    w-12
+                    h-12
+                    rounded-xl
+                    bg-emerald-50
+                    text-emerald-600
+                    flex
+                    items-center
+                    justify-center
+                "
+            >
+
+                <svg
+                    class="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.8"
+                        d="M12 2v20M17 6.5C17 4.6 15 3 12 3S7 4.6 7 6.5 9 10 12 10s5 1.5 5 3.5S15 17 12 17s-5-1.6-5-3.5"
+                    />
+                </svg>
+
+            </div>
+
+        </div>
+
+    </button>
+
+
+    {{-- ===================================================== --}}
+    {{-- OUTSTANDING BALANCE --}}
+    {{-- ===================================================== --}}
+
+    <button
+        type="button"
+        @click="showBalanceModal = true"
+        class="
+            w-full
+            text-left
+            bg-white
+            rounded-xl
+            border
+            border-gray-200
+            p-6
+            hover:border-yellow-300
+            hover:shadow-md
+            transition
+            cursor-pointer
+        "
+    >
+
+        <div class="flex items-start justify-between">
+
+            <div>
+
+                <p class="text-sm text-gray-500">
+                    Outstanding Balance
+                </p>
+
+                <p class="text-3xl font-bold text-gray-900 mt-3">
+                    ₱{{ number_format($outstandingBalance, 2) }}
+                </p>
+
+                <p class="text-xs text-gray-400 mt-2">
+                    Total unpaid balance from repair jobs
+                </p>
+
+                <p class="text-xs text-yellow-600 font-medium mt-3">
+                    Click to view repair details →
+                </p>
+
+            </div>
+
+
+            <div
+                class="
+                    w-12
+                    h-12
+                    rounded-xl
+                    bg-yellow-50
+                    text-yellow-600
+                    flex
+                    items-center
+                    justify-center
+                "
+            >
+
+                <svg
+                    class="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.8"
+                        d="M12 8v4l3 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                </svg>
+
+            </div>
+
+        </div>
+
+    </button>
+
+
+    {{-- ===================================================== --}}
+    {{-- REVENUE MODAL --}}
+    {{-- ===================================================== --}}
+
+    <div
+        x-show="showRevenueModal"
+        x-cloak
+        x-transition.opacity
+        @keydown.escape.window="showRevenueModal = false"
+        class="fixed inset-0 z-50 overflow-y-auto"
+    >
+
+        {{-- Backdrop --}}
+
+        <div
+            class="fixed inset-0 bg-black/40"
+            @click="showRevenueModal = false"
+        ></div>
+
+
+        {{-- Modal Container --}}
+
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+
+            <div
+                x-show="showRevenueModal"
+                x-transition
+                @click.stop
+                class="
+                    relative
+                    w-full
+                    max-w-3xl
+                    bg-white
+                    rounded-2xl
+                    shadow-xl
+                    overflow-hidden
+                "
+            >
+
+                {{-- Header --}}
+
+                <div class="border-b px-6 py-5">
+
+                    <div class="flex items-start justify-between gap-4">
+
+                        <div>
+
+                            <h2 class="text-lg font-semibold text-gray-900">
+                                Revenue This Month
+                            </h2>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                Repair jobs contributing to this month's revenue.
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            @click="showRevenueModal = false"
+                            class="
+                                w-8
+                                h-8
+                                rounded-lg
+                                text-gray-400
+                                hover:bg-gray-100
+                                hover:text-gray-600
+                                flex
+                                items-center
+                                justify-center
+                            "
+                        >
+
+                            <svg
+                                class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            </svg>
+
+                        </button>
 
                     </div>
 
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
 
-                        <svg
-                            class="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M12 2v20M17 6.5C17 4.6 15 3 12 3S7 4.6 7 6.5 9 10 12 10s5 1.5 5 3.5S15 17 12 17s-5-1.6-5-3.5"
-                            />
-                        </svg>
+                    {{-- Total --}}
+
+                    <div
+                        class="
+                            mt-5
+                            rounded-xl
+                            bg-emerald-50
+                            border
+                            border-emerald-100
+                            p-4
+                        "
+                    >
+
+                        <p class="text-xs text-emerald-700">
+                            Total Revenue
+                        </p>
+
+                        <p class="text-2xl font-bold text-emerald-800 mt-1">
+                            ₱{{ number_format($monthlyRevenue, 2) }}
+                        </p>
 
                     </div>
 
                 </div>
 
-            </div>
 
+                {{-- Body --}}
 
-            {{-- Outstanding Balance --}}
+                <div class="p-6">
 
-            <div class="bg-white rounded-xl border border-gray-200 p-6
-                        hover:border-yellow-300 hover:shadow-sm transition">
+                    @forelse($monthlyRevenueJobs as $job)
 
-                <div class="flex items-start justify-between">
-
-                    <div>
-
-                        <p class="text-sm text-gray-500">
-                            Outstanding Balance
-                        </p>
-
-                        <p class="text-3xl font-bold text-gray-900 mt-3">
-                            ₱{{ number_format($outstandingBalance, 2) }}
-                        </p>
-
-                        <p class="text-xs text-gray-400 mt-2">
-                            Unpaid repair balances
-                        </p>
-
-                    </div>
-
-                    <div class="w-12 h-12 rounded-xl bg-yellow-50 text-yellow-600 flex items-center justify-center">
-
-                        <svg
-                            class="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                        <div
+                            class="
+                                border
+                                border-gray-200
+                                rounded-xl
+                                p-4
+                                mb-3
+                                last:mb-0
+                                hover:bg-gray-50
+                                transition
+                            "
                         >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M12 8v4l3 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                        </svg>
 
-                    </div>
+                            <div class="flex items-center justify-between gap-4">
+
+                                <div class="min-w-0">
+
+                                    <p class="font-semibold text-gray-900">
+                                        {{ $job->job_number }}
+                                    </p>
+
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        {{ $job->customer->name ?? 'Unknown Customer' }}
+                                    </p>
+
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        {{ $job->device_type }}
+                                        @if($job->brand)
+                                            · {{ $job->brand }}
+                                        @endif
+                                        @if($job->model)
+                                            {{ $job->model }}
+                                        @endif
+                                    </p>
+
+                                </div>
+
+
+                                <div class="text-right flex-shrink-0">
+
+                                    <p class="text-xs text-gray-500">
+                                        Amount Paid
+                                    </p>
+
+                                    <p class="font-bold text-lg text-emerald-600">
+                                        ₱{{ number_format($job->amount_paid, 2) }}
+                                    </p>
+
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        Released
+                                        {{ $job->released_at?->format('M d, Y') }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    @empty
+
+                        <div class="py-10 text-center">
+
+                            <div
+                                class="
+                                    mx-auto
+                                    w-12
+                                    h-12
+                                    rounded-full
+                                    bg-gray-100
+                                    text-gray-400
+                                    flex
+                                    items-center
+                                    justify-center
+                                "
+                            >
+
+                                <svg
+                                    class="w-6 h-6"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 8c-2.21 0-4 1.12-4 2.5S9.79 13 12 13s4 1.5 4 2.5S14.21 18 12 18m0-10V6m0 12v-2"
+                                    />
+                                </svg>
+
+                            </div>
+
+                            <p class="text-sm font-medium text-gray-700 mt-3">
+                                No revenue recorded this month.
+                            </p>
+
+                            <p class="text-xs text-gray-400 mt-1">
+                                No released repair jobs with payments were found.
+                            </p>
+
+                        </div>
+
+                    @endforelse
+
+                </div>
+
+
+                {{-- Footer --}}
+
+                <div class="border-t px-6 py-4 flex justify-end">
+
+                    <button
+                        type="button"
+                        @click="showRevenueModal = false"
+                        class="
+                            px-4
+                            py-2
+                            rounded-lg
+                            bg-gray-100
+                            hover:bg-gray-200
+                            text-sm
+                            font-medium
+                            text-gray-700
+                        "
+                    >
+                        Close
+                    </button>
 
                 </div>
 
@@ -596,11 +928,306 @@
     </div>
 
 
+    {{-- ===================================================== --}}
+    {{-- OUTSTANDING BALANCE MODAL --}}
+    {{-- ===================================================== --}}
+
+    <div
+        x-show="showBalanceModal"
+        x-cloak
+        x-transition.opacity
+        @keydown.escape.window="showBalanceModal = false"
+        class="fixed inset-0 z-50 overflow-y-auto"
+    >
+
+        {{-- Backdrop --}}
+
+        <div
+            class="fixed inset-0 bg-black/40"
+            @click="showBalanceModal = false"
+        ></div>
+
+
+        {{-- Modal Container --}}
+
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+
+            <div
+                x-show="showBalanceModal"
+                x-transition
+                @click.stop
+                class="
+                    relative
+                    w-full
+                    max-w-3xl
+                    bg-white
+                    rounded-2xl
+                    shadow-xl
+                    overflow-hidden
+                "
+            >
+
+                {{-- Header --}}
+
+                <div class="border-b px-6 py-5">
+
+                    <div class="flex items-start justify-between gap-4">
+
+                        <div>
+
+                            <h2 class="text-lg font-semibold text-gray-900">
+                                Outstanding Balances
+                            </h2>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                Repair jobs that still have an unpaid balance.
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            @click="showBalanceModal = false"
+                            class="
+                                w-8
+                                h-8
+                                rounded-lg
+                                text-gray-400
+                                hover:bg-gray-100
+                                hover:text-gray-600
+                                flex
+                                items-center
+                                justify-center
+                            "
+                        >
+
+                            <svg
+                                class="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"
+                                />
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+
+                    {{-- Total Outstanding --}}
+
+                    <div
+                        class="
+                            mt-5
+                            rounded-xl
+                            bg-yellow-50
+                            border
+                            border-yellow-100
+                            p-4
+                        "
+                    >
+
+                        <p class="text-xs text-yellow-700">
+                            Total Outstanding Balance
+                        </p>
+
+                        <p class="text-2xl font-bold text-yellow-800 mt-1">
+                            ₱{{ number_format($outstandingBalance, 2) }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {{-- Body --}}
+
+                <div class="p-6">
+
+                    @forelse($outstandingBalanceJobs as $job)
+
+                        <div
+                            class="
+                                border
+                                border-gray-200
+                                rounded-xl
+                                p-4
+                                mb-3
+                                last:mb-0
+                                hover:bg-gray-50
+                                transition
+                            "
+                        >
+
+                            <div class="flex items-center justify-between gap-4">
+
+                                <div class="min-w-0">
+
+                                    <p class="font-semibold text-gray-900">
+                                        {{ $job->job_number }}
+                                    </p>
+
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        {{ $job->customer->name ?? 'Unknown Customer' }}
+                                    </p>
+
+                                    <div class="flex flex-wrap items-center gap-2 mt-2">
+
+                                        <span
+                                            class="
+                                                inline-flex
+                                                px-2
+                                                py-1
+                                                rounded-full
+                                                text-[11px]
+                                                font-medium
+                                                bg-gray-100
+                                                text-gray-700
+                                            "
+                                        >
+                                            {{ ucfirst(str_replace('_', ' ', $job->status)) }}
+                                        </span>
+
+                                        <span class="text-xs text-gray-400">
+                                            {{ $job->device_type }}
+                                            @if($job->brand)
+                                                · {{ $job->brand }}
+                                            @endif
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="text-right flex-shrink-0">
+
+                                    <p class="text-xs text-gray-500">
+                                        Balance
+                                    </p>
+
+                                    <p class="font-bold text-lg text-red-600">
+                                        ₱{{ number_format($job->balance, 2) }}
+                                    </p>
+
+                                    <div class="text-xs text-gray-400 mt-1 space-y-0.5">
+
+                                        <p>
+                                            Final:
+                                            ₱{{ number_format($job->final_cost, 2) }}
+                                        </p>
+
+                                        <p>
+                                            Paid:
+                                            ₱{{ number_format($job->amount_paid, 2) }}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    @empty
+
+                        <div class="py-10 text-center">
+
+                            <div
+                                class="
+                                    mx-auto
+                                    w-12
+                                    h-12
+                                    rounded-full
+                                    bg-green-50
+                                    text-green-600
+                                    flex
+                                    items-center
+                                    justify-center
+                                "
+                            >
+
+                                <svg
+                                    class="w-6 h-6"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 13l4 4L19 7"
+                                    />
+                                </svg>
+
+                            </div>
+
+                            <p class="text-sm font-medium text-gray-700 mt-3">
+                                No outstanding balances.
+                            </p>
+
+                            <p class="text-xs text-gray-400 mt-1">
+                                All repair jobs are currently paid in full.
+                            </p>
+
+                        </div>
+
+                    @endforelse
+
+                </div>
+
+
+                {{-- Footer --}}
+
+                <div class="border-t px-6 py-4 flex justify-end">
+
+                    <button
+                        type="button"
+                        @click="showBalanceModal = false"
+                        class="
+                            px-4
+                            py-2
+                            rounded-lg
+                            bg-gray-100
+                            hover:bg-gray-200
+                            text-sm
+                            font-medium
+                            text-gray-700
+                        "
+                    >
+                        Close
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div> 
+
+</div> 
+
+
     {{-- ========================================================= --}}
     {{-- REPAIR STATUS OVERVIEW --}}
     {{-- ========================================================= --}}
 
-    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
+    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden mb-4">
 
         <div class="px-6 py-5 border-b border-gray-200">
 
@@ -732,7 +1359,7 @@
     {{-- TODAY'S APPOINTMENTS + READY FOR PICKUP --}}
     {{-- ========================================================= --}}
 
-    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-4">
 
         {{-- Today's Appointments --}}
 

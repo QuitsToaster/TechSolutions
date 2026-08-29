@@ -527,8 +527,8 @@
             </div>
 
 
-            <!-- Cost -->
 
+            <!-- Cost -->
             <div class="bg-white border rounded-xl overflow-hidden">
 
                 <div class="border-b px-6 py-4">
@@ -539,113 +539,121 @@
 
                 </div>
 
+
                 <div class="space-y-4 p-6">
 
+                    <!-- Estimated Cost -->
                     <div class="flex justify-between">
 
                         <span class="text-sm text-gray-500">
                             Estimated Cost
                         </span>
 
-                        <span class="font-medium">
+                        <span class="font-medium text-gray-900">
                             ₱{{ number_format($repairJob->estimated_cost, 2) }}
                         </span>
 
                     </div>
 
 
+                    <!-- Labor -->
                     <div class="flex justify-between">
 
                         <span class="text-sm text-gray-500">
                             Labor
                         </span>
 
-                        <span class="font-medium">
+                        <span class="font-medium text-gray-900">
                             ₱{{ number_format($repairJob->labor_cost, 2) }}
                         </span>
 
                     </div>
 
 
+                    <!-- Parts -->
                     <div class="flex justify-between">
 
                         <span class="text-sm text-gray-500">
                             Parts
                         </span>
 
-                        <span class="font-medium">
+                        <span class="font-medium text-gray-900">
                             ₱{{ number_format($repairJob->parts_cost, 2) }}
                         </span>
 
                     </div>
 
 
+                    <!-- Discount -->
                     <div class="flex justify-between">
 
                         <span class="text-sm text-gray-500">
                             Discount
                         </span>
 
-                        <span class="font-medium">
+                        <span class="font-medium text-gray-900">
                             ₱{{ number_format($repairJob->discount, 2) }}
                         </span>
 
                     </div>
 
 
+                    <!-- Final Cost -->
                     <div class="border-t pt-4 flex justify-between">
 
-                        <span class="font-semibold">
+                        <span class="font-semibold text-gray-900">
                             Final Cost
                         </span>
 
-                        <span class="font-bold text-lg">
+                        <span class="font-bold text-lg text-gray-900">
                             ₱{{ number_format($repairJob->final_cost, 2) }}
                         </span>
 
                     </div>
 
 
+                    <!-- Amount Paid -->
                     <div class="flex justify-between">
 
                         <span class="text-sm text-gray-500">
                             Amount Paid
                         </span>
 
-                        <span class="font-medium">
+                        <span class="font-semibold text-green-600">
                             ₱{{ number_format($repairJob->amount_paid, 2) }}
                         </span>
 
                     </div>
 
 
+                    <!-- Balance -->
                     <div class="border-t pt-4 flex justify-between">
 
-                        <span class="font-semibold">
+                        <span class="font-semibold text-gray-900">
                             Balance
                         </span>
 
-                        <span class="font-bold text-red-600">
+                        <span class="font-bold text-lg {{ $repairJob->balance > 0 ? 'text-red-600' : 'text-green-600' }}">
                             ₱{{ number_format($repairJob->balance, 2) }}
                         </span>
 
                     </div>
 
-                    {{-- Payment Action --}}
 
+                    {{-- Payment Section --}}
                     @if($repairJob->status === 'released')
 
                         @if($repairJob->balance > 0)
 
                             <div class="border-t pt-5">
 
-                                <div class="rounded-lg bg-green-50 border border-green-200 p-4">
+                                <div class="rounded-lg bg-blue-50 border border-blue-200 p-4">
 
                                     <div class="flex items-start gap-3">
 
                                         <div class="flex-shrink-0">
 
-                                            <div class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                                            <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
 
                                                 <svg
                                                     class="w-5 h-5"
@@ -658,7 +666,7 @@
                                                         stroke-linecap="round"
                                                         stroke-linejoin="round"
                                                         stroke-width="2"
-                                                        d="M5 13l4 4L19 7"
+                                                        d="M12 8c-2.21 0-4 1.12-4 2.5S9.79 13 12 13s4 1.12 4 2.5S14.21 18 12 18m0-10V6m0 12v-2m-7-4a7 7 0 1114 0 7 7 0 01-14 0z"
                                                     />
 
                                                 </svg>
@@ -670,12 +678,13 @@
 
                                         <div class="flex-1">
 
-                                            <h3 class="text-sm font-semibold text-green-900">
-                                                Payment Required
+                                            <h3 class="text-sm font-semibold text-blue-900">
+                                                Record Payment
                                             </h3>
 
-                                            <p class="mt-1 text-xs text-green-700">
-                                                This repair has been released and can now be marked as fully paid.
+                                            <p class="mt-1 text-xs text-blue-700">
+                                                Enter the amount paid by the customer.
+                                                Partial payments are allowed.
                                             </p>
 
                                         </div>
@@ -686,11 +695,105 @@
                                     <form
                                         method="POST"
                                         action="{{ route('repair-jobs.mark-paid', $repairJob) }}"
-                                        class="mt-4"
-                                        onsubmit="return confirm('Are you sure you want to mark this repair job as fully paid? This will also mark the related appointment as paid.');"
+                                        class="mt-4 space-y-4"
                                     >
 
                                         @csrf
+
+
+                                        <!-- Payment Amount -->
+
+                                        <div>
+
+                                            <label
+                                                for="payment_amount"
+                                                class="block text-sm font-medium text-gray-700 mb-2"
+                                            >
+                                                Payment Amount
+                                            </label>
+
+                                            <div class="relative">
+
+                                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                                    ₱
+                                                </span>
+
+                                                <input
+                                                    type="number"
+                                                    name="payment_amount"
+                                                    id="payment_amount"
+                                                    min="0.01"
+                                                    max="{{ $repairJob->balance }}"
+                                                    step="0.01"
+                                                    value="{{ old('payment_amount') }}"
+                                                    required
+                                                    placeholder="0.00"
+                                                    class="
+                                                        w-full
+                                                        rounded-lg
+                                                        border
+                                                        border-gray-300
+                                                        bg-white
+                                                        pl-8
+                                                        pr-3
+                                                        py-2.5
+                                                        text-sm
+                                                        focus:border-blue-500
+                                                        focus:ring-blue-500
+                                                    "
+                                                >
+
+                                            </div>
+
+                                            <p class="mt-1 text-xs text-gray-500">
+                                                Remaining balance:
+                                                <span class="font-semibold text-red-600">
+                                                    ₱{{ number_format($repairJob->balance, 2) }}
+                                                </span>
+                                            </p>
+
+                                            @error('payment_amount')
+                                                <p class="mt-1 text-xs text-red-600">
+                                                    {{ $message }}
+                                                </p>
+                                            @enderror
+
+                                        </div>
+
+
+                                        <!-- Payment Preview -->
+
+                                        <div class="rounded-lg bg-white border border-blue-100 p-3">
+
+                                            <div class="flex justify-between text-sm">
+
+                                                <span class="text-gray-500">
+                                                    Current Paid
+                                                </span>
+
+                                                <span class="font-medium text-gray-900">
+                                                    ₱{{ number_format($repairJob->amount_paid, 2) }}
+                                                </span>
+
+                                            </div>
+
+
+                                            <div class="flex justify-between text-sm mt-2">
+
+                                                <span class="text-gray-500">
+                                                    Current Balance
+                                                </span>
+
+                                                <span class="font-medium text-red-600">
+                                                    ₱{{ number_format($repairJob->balance, 2) }}
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <!-- Submit -->
 
                                         <button
                                             type="submit"
@@ -703,8 +806,8 @@
                                                 px-4
                                                 py-2.5
                                                 rounded-lg
-                                                bg-green-600
-                                                hover:bg-green-700
+                                                bg-blue-600
+                                                hover:bg-blue-700
                                                 text-white
                                                 text-sm
                                                 font-semibold
@@ -728,8 +831,7 @@
 
                                             </svg>
 
-                                            Mark as Paid
-                                            — ₱{{ number_format($repairJob->balance, 2) }}
+                                            Record Payment
 
                                         </button>
 
@@ -739,7 +841,10 @@
 
                             </div>
 
+
                         @else
+
+                            <!-- Fully Paid -->
 
                             <div class="border-t pt-5">
 
@@ -774,7 +879,7 @@
                                             </p>
 
                                             <p class="text-xs text-green-700 mt-1">
-                                                This repair job has already been paid in full.
+                                                This repair job has been paid in full.
                                             </p>
 
                                         </div>
@@ -787,7 +892,10 @@
 
                         @endif
 
+
                     @else
+
+                        <!-- Payment unavailable -->
 
                         <div class="border-t pt-5">
 
@@ -810,6 +918,8 @@
                 </div>
 
             </div>
+
+
 
 
             <!-- Status History -->

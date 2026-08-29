@@ -253,79 +253,163 @@ class RepairJobController extends Controller
         );
     }
 
-    /**
-     * Mark a released repair job as fully paid.
-     *
-     * This will:
-     * - Set amount_paid equal to final_cost.
-     * - Mark the related appointment as paid.
-     * - Create a payment-related status history entry.
-     */
-    public function markAsPaid(RepairJob $repairJob)
-    {
-        /*
-         * Payment is only allowed when the repair
-         * job has been released.
+        /**
+         * Record a payment for a released repair job.
+         *
+         * Allows:
+         * - Partial payment
+         * - Full payment
+         * - Multiple payments until the balance reaches zero
          */
-        if ($repairJob->status !== 'released') {
-            return back()->with(
-                'error',
-                'This repair job can only be marked as paid after it has been released.'
-            );
-        }
-
-        /*
-         * Prevent marking an already fully paid
-         * repair job as paid again.
-         */
-        if ((float) $repairJob->balance <= 0) {
-            return back()->with(
-                'info',
-                'This repair job is already fully paid.'
-            );
-        }
-
-        DB::transaction(function () use ($repairJob) {
-
+        public function markAsPaid(
+            Request $request,
+            RepairJob $repairJob
+        ) {
             /*
-             * Mark the repair job as fully paid.
-             */
-            $repairJob->amount_paid = $repairJob->final_cost;
-
-            $repairJob->save();
-
-            /*
-             * Mark the related appointment as paid.
-             *
-             * The appointment relationship is nullable,
-             * so only update it if an appointment exists.
-             */
-            if ($repairJob->appointment) {
-
-                $repairJob->appointment->update([
-                    'payment_status' => 'paid',
-                ]);
+            * Payment is only allowed when the repair
+            * job has been released.
+            */
+            if ($repairJob->status !== 'released') {
+                return back()->with(
+                    'error',
+                    'Payment can only be recorded after the repair job has been released.'
+                );
             }
 
             /*
-             * Add payment activity to status history.
-             */
-            RepairJobStatusHistory::create([
-                'repair_job_id' => $repairJob->id,
+            * Prevent additional payments if the repair
+            * job is already fully paid.
+            */
+            if ((float) $repairJob->balance <= 0) {
+                return back()->with(
+                    'info',
+                    'This repair job is already fully paid.'
+                );
+            }
 
-                'old_status' => $repairJob->status,
-
-                'new_status' => $repairJob->status,
-
-                'remarks' => 'Payment completed. Repair job marked as fully paid.',
-
-                'changed_by' => auth()->id(),
+            /*
+            * Validate the payment amount.
+            *
+            * The customer cannot pay more than
+            * the remaining balance.
+            */
+            $validated = $request->validate([
+                'payment_amount' => [
+                    'required',
+                    'numeric',
+                    'min:0.01',
+                    'max:' . $repairJob->balance,
+                ],
             ]);
-        });
 
-        return back()->with(
-            'success',
-            'Payment recorded successfully. The repair job and appointment have been marked as paid.'
-        );
-    }
+            $paymentAmount = (float) $validated['payment_amount'];
+
+            DB::transaction(function () use (
+                $repairJob,
+                $paymentAmount
+            ) {
+
+                /*
+                * Add the new payment to the existing
+                * amount already paid.
+                */
+                $newAmountPaid =
+                    (float) $repairJob->amount_paid + $paymentAmount;
+
+                /*
+                * Make sure the amount paid never
+                * exceeds the final cost.
+                */
+                $newAmountPaid = min(
+                    $newAmountPaid,
+                    (float) $repairJob->final_cost
+                );
+
+                $repairJob->amount_paid = $newAmountPaid;
+
+                $repairJob->save();
+
+
+                /*
+                * Determine whether the repair is now
+                * fully paid or still has a balance.
+                */
+                $remainingBalance =
+                    max(
+                        0,
+                        (float) $repairJob->final_cost -
+                        (float) $repairJob->amount_paid
+                    );
+
+
+                /*
+                * If fully paid, mark the related
+                * appointment as paid.
+                */
+                if ($remainingBalance <= 0) {
+
+                    if ($repairJob->appointment) {
+
+                        $repairJob->appointment->update([
+                            'payment_status' => 'paid',
+                        ]);
+
+                    }
+
+                }
+
+
+                /*
+                * Create payment activity in the
+                * repair job status history.
+                */
+                $paymentStatus =
+                    $remainingBalance <= 0
+                        ? 'Payment completed.'
+                        : 'Partial payment recorded.';
+
+                RepairJobStatusHistory::create([
+                    'repair_job_id' => $repairJob->id,
+
+                    'old_status' => $repairJob->status,
+
+                    'new_status' => $repairJob->status,
+
+                    'remarks' =>
+                        $paymentStatus .
+                        ' Payment received: ₱' .
+                        number_format($paymentAmount, 2) .
+                        '. Total paid: ₱' .
+                        number_format($repairJob->amount_paid, 2) .
+                        '. Remaining balance: ₱' .
+                        number_format($remainingBalance, 2) . '.',
+
+                    'changed_by' => auth()->id(),
+                ]);
+            });
+
+
+            /*
+            * Show an appropriate success message.
+            */
+            $repairJob->refresh();
+
+            if ((float) $repairJob->balance <= 0) {
+
+                return back()->with(
+                    'success',
+                    'Payment recorded successfully. The repair job is now fully paid.'
+                );
+
+            }
+
+
+            return back()->with(
+                'success',
+                'Partial payment recorded successfully. Remaining balance: ₱' .
+                number_format($repairJob->balance, 2) . '.'
+            );
+        }
+
+
 }
