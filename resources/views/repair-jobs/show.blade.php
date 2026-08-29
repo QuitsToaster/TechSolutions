@@ -631,6 +631,182 @@
 
                     </div>
 
+                    {{-- Payment Action --}}
+
+                    @if($repairJob->status === 'released')
+
+                        @if($repairJob->balance > 0)
+
+                            <div class="border-t pt-5">
+
+                                <div class="rounded-lg bg-green-50 border border-green-200 p-4">
+
+                                    <div class="flex items-start gap-3">
+
+                                        <div class="flex-shrink-0">
+
+                                            <div class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+
+                                                <svg
+                                                    class="w-5 h-5"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M5 13l4 4L19 7"
+                                                    />
+
+                                                </svg>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="flex-1">
+
+                                            <h3 class="text-sm font-semibold text-green-900">
+                                                Payment Required
+                                            </h3>
+
+                                            <p class="mt-1 text-xs text-green-700">
+                                                This repair has been released and can now be marked as fully paid.
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <form
+                                        method="POST"
+                                        action="{{ route('repair-jobs.mark-paid', $repairJob) }}"
+                                        class="mt-4"
+                                        onsubmit="return confirm('Are you sure you want to mark this repair job as fully paid? This will also mark the related appointment as paid.');"
+                                    >
+
+                                        @csrf
+
+                                        <button
+                                            type="submit"
+                                            class="
+                                                w-full
+                                                inline-flex
+                                                items-center
+                                                justify-center
+                                                gap-2
+                                                px-4
+                                                py-2.5
+                                                rounded-lg
+                                                bg-green-600
+                                                hover:bg-green-700
+                                                text-white
+                                                text-sm
+                                                font-semibold
+                                                transition
+                                            "
+                                        >
+
+                                            <svg
+                                                class="w-5 h-5"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M12 8c-2.21 0-4 1.12-4 2.5S9.79 13 12 13s4 1.12 4 2.5S14.21 18 12 18m0-10V6m0 12v-2m-7-4a7 7 0 1114 0 7 7 0 01-14 0z"
+                                                />
+
+                                            </svg>
+
+                                            Mark as Paid
+                                            — ₱{{ number_format($repairJob->balance, 2) }}
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        @else
+
+                            <div class="border-t pt-5">
+
+                                <div class="rounded-lg bg-green-50 border border-green-200 p-4">
+
+                                    <div class="flex items-center gap-3">
+
+                                        <div class="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+
+                                            <svg
+                                                class="w-5 h-5"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M5 13l4 4L19 7"
+                                                />
+
+                                            </svg>
+
+                                        </div>
+
+                                        <div>
+
+                                            <p class="text-sm font-semibold text-green-900">
+                                                Fully Paid
+                                            </p>
+
+                                            <p class="text-xs text-green-700 mt-1">
+                                                This repair job has already been paid in full.
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        @endif
+
+                    @else
+
+                        <div class="border-t pt-5">
+
+                            <div class="rounded-lg bg-gray-50 border border-gray-200 p-4">
+
+                                <p class="text-sm font-medium text-gray-700">
+                                    Payment unavailable
+                                </p>
+
+                                <p class="text-xs text-gray-500 mt-1">
+                                    Payment can only be recorded after the repair job has been released.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    @endif
+
                 </div>
 
             </div>

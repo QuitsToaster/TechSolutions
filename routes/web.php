@@ -30,5 +30,12 @@ Route::patch(
     [RepairJobController::class, 'updateStatus']
 )->name('repair-jobs.update-status');
 
+Route::resource('repair-jobs', RepairJobController::class);
+
+Route::post(
+    '/repair-jobs/{repairJob}/mark-paid',
+    [RepairJobController::class, 'markAsPaid']
+)->name('repair-jobs.mark-paid');
+
 Route::post('/appointments/{appointment}/convert-to-repair-job', [RepairJobController::class, 'convertFromAppointment'])
     ->name('appointments.convert-to-repair-job');

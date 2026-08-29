@@ -51,7 +51,10 @@ class RepairJobController extends Controller
         if ($existingRepairJob) {
             return redirect()
                 ->route('repair-jobs.show', $existingRepairJob)
-                ->with('info', 'This appointment has already been converted to a repair job.');
+                ->with(
+                    'info',
+                    'This appointment has already been converted to a repair job.'
+                );
         }
 
         // Make sure the appointment has a customer.
@@ -66,9 +69,6 @@ class RepairJobController extends Controller
 
             /*
              * Generate a unique repair job number.
-             *
-             * Example:
-             * RJ-20260828-0001
              */
             $jobNumber = $this->generateJobNumber();
 
@@ -110,7 +110,7 @@ class RepairJobController extends Controller
             ]);
 
             /*
-             * Create the initial status history.
+             * Create initial status history.
              */
             RepairJobStatusHistory::create([
                 'repair_job_id' => $repairJob->id,
@@ -173,9 +173,9 @@ class RepairJobController extends Controller
         $oldStatus = $repairJob->status;
 
         /*
-        * Don't create another history record
-        * if the status hasn't changed.
-        */
+         * Don't create another history record
+         * if the status hasn't changed.
+         */
         if ($oldStatus === $newStatus) {
             return back()->with(
                 'error',
@@ -191,33 +191,30 @@ class RepairJobController extends Controller
         ) {
 
             /*
-            * Update repair job status.
-            */
+             * Update repair job status.
+             */
             $repairJob->status = $newStatus;
 
-
             /*
-            * Automatically set completed_at
-            * when the repair becomes ready for pickup.
-            */
+             * Automatically set completed_at
+             * when repair is ready for pickup.
+             */
             if ($newStatus === 'ready_for_pickup') {
                 $repairJob->completed_at = now();
             }
 
-
             /*
-            * Automatically set released_at
-            * when the unit is released.
-            */
+             * Automatically set released_at
+             * when the unit is released.
+             */
             if ($newStatus === 'released') {
                 $repairJob->released_at = now();
             }
 
-
             /*
-            * If the job is moved away from
-            * ready for pickup, clear completed_at.
-            */
+             * If moved away from ready for pickup,
+             * clear completed_at.
+             */
             if (
                 $oldStatus === 'ready_for_pickup' &&
                 $newStatus !== 'ready_for_pickup'
@@ -225,11 +222,10 @@ class RepairJobController extends Controller
                 $repairJob->completed_at = null;
             }
 
-
             /*
-            * If the job is moved away from
-            * released, clear released_at.
-            */
+             * If moved away from released,
+             * clear released_at.
+             */
             if (
                 $oldStatus === 'released' &&
                 $newStatus !== 'released'
@@ -237,30 +233,99 @@ class RepairJobController extends Controller
                 $repairJob->released_at = null;
             }
 
+            $repairJob->save();
+
+            /*
+             * Create status history.
+             */
+            RepairJobStatusHistory::create([
+                'repair_job_id' => $repairJob->id,
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus,
+                'remarks' => $validated['remarks'] ?? null,
+                'changed_by' => auth()->id(),
+            ]);
+        });
+
+        return back()->with(
+            'success',
+            'Repair job status updated successfully.'
+        );
+    }
+
+    /**
+     * Mark a released repair job as fully paid.
+     *
+     * This will:
+     * - Set amount_paid equal to final_cost.
+     * - Mark the related appointment as paid.
+     * - Create a payment-related status history entry.
+     */
+    public function markAsPaid(RepairJob $repairJob)
+    {
+        /*
+         * Payment is only allowed when the repair
+         * job has been released.
+         */
+        if ($repairJob->status !== 'released') {
+            return back()->with(
+                'error',
+                'This repair job can only be marked as paid after it has been released.'
+            );
+        }
+
+        /*
+         * Prevent marking an already fully paid
+         * repair job as paid again.
+         */
+        if ((float) $repairJob->balance <= 0) {
+            return back()->with(
+                'info',
+                'This repair job is already fully paid.'
+            );
+        }
+
+        DB::transaction(function () use ($repairJob) {
+
+            /*
+             * Mark the repair job as fully paid.
+             */
+            $repairJob->amount_paid = $repairJob->final_cost;
 
             $repairJob->save();
 
+            /*
+             * Mark the related appointment as paid.
+             *
+             * The appointment relationship is nullable,
+             * so only update it if an appointment exists.
+             */
+            if ($repairJob->appointment) {
+
+                $repairJob->appointment->update([
+                    'payment_status' => 'paid',
+                ]);
+            }
 
             /*
-            * Create status history.
-            */
+             * Add payment activity to status history.
+             */
             RepairJobStatusHistory::create([
-                    'repair_job_id' => $repairJob->id,
+                'repair_job_id' => $repairJob->id,
 
-                    'old_status' => $oldStatus,
+                'old_status' => $repairJob->status,
 
-                    'new_status' => $newStatus,
+                'new_status' => $repairJob->status,
 
-                    'remarks' => $validated['remarks'] ?? null,
+                'remarks' => 'Payment completed. Repair job marked as fully paid.',
 
-                    'changed_by' => auth()->id(),
-                ]);
-            });
+                'changed_by' => auth()->id(),
+            ]);
+        });
 
-
-            return back()->with(
-                'success',
-                'Repair job status updated successfully.'
-            );
-        }
+        return back()->with(
+            'success',
+            'Payment recorded successfully. The repair job and appointment have been marked as paid.'
+        );
+    }
 }
