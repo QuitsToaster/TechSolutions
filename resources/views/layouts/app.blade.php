@@ -77,25 +77,76 @@
 
                 <!-- Inventory -->
                 <div class="px-3 pb-2">
-                    <p class="text-[10px] uppercase tracking-widest font-semibold text-slate-500">Inventory</p>
+                    <p class="text-[10px] uppercase tracking-widest font-semibold text-slate-500">
+                        Inventory
+                    </p>
                 </div>
 
                 @php
                     $inventoryItems = [
-                        ['route' => 'parts.index', 'label' => 'Parts / Inventory', 'icon' => 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10'],
-                        ['route' => 'suppliers.index', 'label' => 'Suppliers', 'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'],
+                        [
+                            'route' => 'parts.index',
+                            'label' => 'Stocks',
+                            'icon' => 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10',
+                        ],
+
+                        [
+                            'route' => 'orders.index',
+                            'label' => 'Orders',
+                            'icon' => 'M3 7h18M5 7V5a2 2 0 012-2h10a2 2 0 012 2v2M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7M9 11h6',
+                        ],
+
+                        [
+                            'route' => 'suppliers.index',
+                            'label' => 'Suppliers',
+                            'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 005.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z',
+                        ],
                     ];
                 @endphp
 
                 @foreach($inventoryItems as $item)
-                    <a href="{{ route($item['route']) }}" 
-                       class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition {{ request()->routeIs($item['route']) ? 'bg-slate-800 text-white' : 'text-slate-400 hover:bg-slate-900 hover:text-white' }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="{{ $item['icon'] }}"/>
+
+                    <a
+                        href="{{ route($item['route']) }}"
+                        class="
+                            flex
+                            items-center
+                            gap-3
+                            px-3
+                            py-2.5
+                            rounded-lg
+                            text-sm
+                            font-medium
+                            transition
+                            {{ request()->routeIs($item['route'])
+                                ? 'bg-slate-800 text-white'
+                                : 'text-slate-400 hover:bg-slate-900 hover:text-white'
+                            }}
+                        "
+                    >
+
+                        <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.8"
+                                d="{{ $item['icon'] }}"
+                            />
+
                         </svg>
+
                         {{ $item['label'] }}
+
                     </a>
+
                 @endforeach
+
 
                 <!-- Divider -->
                 <div class="border-t border-slate-800 my-5"></div>

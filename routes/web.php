@@ -7,6 +7,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PartController;
 use App\Http\Controllers\RepairJobController;
+use App\Http\Controllers\OrderController;
 
 Route::get('/', [DashboardController::class, 'index'])
     ->name('dashboard');
@@ -39,3 +40,8 @@ Route::post(
 
 Route::post('/appointments/{appointment}/convert-to-repair-job', [RepairJobController::class, 'convertFromAppointment'])
     ->name('appointments.convert-to-repair-job');
+
+Route::resource('orders', OrderController::class);
+
+Route::get('/orders', [OrderController::class, 'index'])
+    ->name('orders.index');
