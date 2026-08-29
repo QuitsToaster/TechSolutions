@@ -38,6 +38,169 @@ class RepairJobController extends Controller
     }
 
     /**
+ * Update repair job details.
+ */
+public function update(Request $request, RepairJob $repairJob)
+{
+    $validated = $request->validate([
+        'device_type' => [
+            'required',
+            'string',
+            'max:255',
+        ],
+
+        'brand' => [
+            'nullable',
+            'string',
+            'max:255',
+        ],
+
+        'model' => [
+            'nullable',
+            'string',
+            'max:255',
+        ],
+
+        'serial_number' => [
+            'nullable',
+            'string',
+            'max:255',
+        ],
+
+        'imei' => [
+            'nullable',
+            'string',
+            'max:255',
+        ],
+
+        'problem_reported' => [
+            'required',
+            'string',
+        ],
+
+        'diagnosis' => [
+            'nullable',
+            'string',
+        ],
+
+        'repair_notes' => [
+            'nullable',
+            'string',
+        ],
+
+        'priority' => [
+            'required',
+            'in:low,normal,high,urgent',
+        ],
+
+        'estimated_cost' => [
+            'required',
+            'numeric',
+            'min:0',
+        ],
+
+        'labor_cost' => [
+            'required',
+            'numeric',
+            'min:0',
+        ],
+
+        'parts_cost' => [
+            'required',
+            'numeric',
+            'min:0',
+        ],
+
+        'discount' => [
+            'required',
+            'numeric',
+            'min:0',
+        ],
+
+        'final_cost' => [
+            'required',
+            'numeric',
+            'min:0',
+        ],
+
+        'date_received' => [
+            'required',
+            'date',
+        ],
+
+        'expected_completion_date' => [
+            'nullable',
+            'date',
+            'after_or_equal:date_received',
+        ],
+    ]);
+
+    /*
+     * Prevent the final cost from being lower
+     * than the amount already paid.
+     */
+    if ((float) $validated['final_cost'] < (float) $repairJob->amount_paid) {
+        return back()
+            ->withInput()
+            ->withErrors([
+                'final_cost' =>
+                    'Final cost cannot be lower than the amount already paid (₱' .
+                    number_format($repairJob->amount_paid, 2) .
+                    ').',
+            ]);
+    }
+
+    /*
+     * Update repair job.
+     */
+    $repairJob->update([
+        'device_type' => $validated['device_type'],
+        'brand' => $validated['brand'] ?? null,
+        'model' => $validated['model'] ?? null,
+        'serial_number' => $validated['serial_number'] ?? null,
+        'imei' => $validated['imei'] ?? null,
+
+        'problem_reported' => $validated['problem_reported'],
+        'diagnosis' => $validated['diagnosis'] ?? null,
+        'repair_notes' => $validated['repair_notes'] ?? null,
+
+        'priority' => $validated['priority'],
+
+        'estimated_cost' => $validated['estimated_cost'],
+        'labor_cost' => $validated['labor_cost'],
+        'parts_cost' => $validated['parts_cost'],
+        'discount' => $validated['discount'],
+        'final_cost' => $validated['final_cost'],
+
+        'date_received' => $validated['date_received'],
+        'expected_completion_date' =>
+            $validated['expected_completion_date'] ?? null,
+    ]);
+
+    /*
+     * Keep the related appointment payment status
+     * synchronized when applicable.
+     */
+    if ($repairJob->appointment) {
+
+        $repairJob->appointment->update([
+            'payment_status' =>
+                (float) $repairJob->amount_paid >=
+                (float) $repairJob->final_cost
+                    ? 'paid'
+                    : 'unpaid',
+        ]);
+    }
+
+    return redirect()
+        ->route('repair-jobs.show', $repairJob)
+        ->with(
+            'success',
+            'Repair job details updated successfully.'
+        );
+}
+
+    /**
      * Convert an appointment into a repair job.
      */
     public function convertFromAppointment(Appointment $appointment)

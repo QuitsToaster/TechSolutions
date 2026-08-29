@@ -160,9 +160,25 @@
 
 
                             <!-- Cost -->
-                            <td class="px-6 py-4 text-right font-medium text-gray-900">
+                            <td class="px-6 py-4 text-right">
 
-                                ₱{{ number_format($repairJob->final_cost ?? 0, 2) }}
+                                <p class="text-sm font-semibold text-gray-900">
+                                    ₱{{ number_format($repairJob->final_cost ?? 0, 2) }}
+                                </p>
+
+                                @if($repairJob->balance > 0)
+
+                                    <p class="text-xs text-red-500 mt-1">
+                                        ₱{{ number_format($repairJob->balance ?? 0, 2) }} balance
+                                    </p>
+
+                                @else
+
+                                    <p class="text-xs text-green-600 mt-1">
+                                        Paid
+                                    </p>
+
+                                @endif
 
                             </td>
 
