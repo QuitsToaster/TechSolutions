@@ -8,6 +8,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PartController;
 use App\Http\Controllers\RepairJobController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PriceListController;
 
 Route::get('/', [DashboardController::class, 'index'])
     ->name('dashboard');
@@ -50,3 +51,6 @@ Route::resource('orders', OrderController::class);
 
 Route::get('/orders', [OrderController::class, 'index'])
     ->name('orders.index');
+
+Route::resource('price-lists', PriceListController::class)
+    ->except(['show']);
