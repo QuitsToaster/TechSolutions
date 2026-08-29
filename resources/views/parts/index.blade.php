@@ -405,35 +405,87 @@
                                         "
                                     >
 
-                                        <a
-                                            href="{{ route('parts.show', $part) }}"
-                                            class="
-                                                px-3
-                                                py-2
-                                                text-sm
-                                                rounded-lg
-                                                bg-gray-100
-                                                hover:bg-gray-200
-                                            "
-                                        >
-                                            View
-                                        </a>
+                                         {{-- View --}}
+                                    <a
+                                        href="{{ route('parts.show', $part) }}"
+                                        title="View Part"
+                                        class="inline-flex items-center justify-center
+                                            w-9 h-9 rounded-lg
+                                            border border-slate-200
+                                            bg-white
+                                            text-slate-600
+                                            hover:bg-slate-50
+                                            hover:text-blue-600
+                                            transition"
+                                    >
 
-
-                                        <a
-                                            href="{{ route('parts.edit', $part) }}"
-                                            class="
-                                                px-3
-                                                py-2
-                                                text-sm
-                                                rounded-lg
-                                                bg-blue-50
-                                                hover:bg-blue-100
-                                                text-blue-700
-                                            "
+                                        <svg
+                                            class="w-4 h-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
                                         >
-                                            Edit
-                                        </a>
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                            />
+
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M2.458 12C3.732 7.943 7.523 5 12 5
+                                                c4.478 0 8.268 2.943 9.542 7
+                                                -1.274 4.057-5.064 7-9.542 7
+                                                -4.477 0-8.268-2.943-9.542-7z"
+                                            />
+                                        </svg>
+
+                                    </a>
+                                
+                                {{-- Edit --}}
+                                    <a
+                                        href="{{ route('parts.edit', $part) }}"
+                                        title="Edit Part"
+                                        class="inline-flex items-center justify-center
+                                            w-9 h-9 rounded-lg
+                                            border border-slate-200
+                                            bg-white
+                                            text-slate-600
+                                            hover:bg-slate-50
+                                            hover:text-amber-600
+                                            transition"
+                                    >
+
+                                        <svg
+                                            class="w-4 h-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M11 5H6
+                                                a2 2 0 00-2 2v11
+                                                a2 2 0 002 2h11
+                                                a2 2 0 002-2v-5"
+                                            />
+
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M18.5 2.5
+                                                a2.121 2.121 0 013 3L12 15l-4 1
+                                                1-4 9.5-9.5z"
+                                            />
+                                        </svg>
+
+                                    </a>
 
                                     </div>
 
