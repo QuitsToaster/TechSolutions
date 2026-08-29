@@ -24,20 +24,222 @@
             </p>
         </div>
 
-        <div class="flex flex-wrap gap-2">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
 
+            {{-- New Appointment --}}
             <a
                 href="{{ route('appointments.create') }}"
-                class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-medium transition"
+                class="group flex items-center gap-3 rounded-xl border border-blue-100
+                    bg-blue-50/50 px-4 py-3.5
+                    hover:bg-blue-600 hover:border-blue-600
+                    transition-all duration-200"
             >
-                + Appointment
+
+                <div
+                    class="w-10 h-10 shrink-0 rounded-lg bg-blue-100
+                        text-blue-600 flex items-center justify-center
+                        group-hover:bg-white/20 group-hover:text-white transition"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M8 2v4M16 2v4M3 10h18"
+                        />
+
+                        <rect
+                            x="3"
+                            y="4"
+                            width="18"
+                            height="17"
+                            rx="2"
+                            stroke-width="1.8"
+                        />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-width="1.8"
+                            d="M12 13v4M10 15h4"
+                        />
+                    </svg>
+                </div>
+
+                <div class="min-w-0">
+                    <p class="text-sm font-semibold text-gray-900 group-hover:text-white">
+                        Appointment
+                    </p>
+
+                    <p class="text-xs text-gray-500 group-hover:text-blue-100">
+                        Schedule a visit
+                    </p>
+                </div>
+
             </a>
 
+
+            {{-- Add Customer --}}
             <a
                 href="{{ route('customers.create') }}"
-                class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium transition"
+                class="group flex items-center gap-3 rounded-xl border border-emerald-100
+                    bg-emerald-50/50 px-4 py-3.5
+                    hover:bg-emerald-600 hover:border-emerald-600
+                    transition-all duration-200"
             >
-                + Add Customer
+
+                <div
+                    class="w-10 h-10 shrink-0 rounded-lg bg-emerald-100
+                        text-emerald-600 flex items-center justify-center
+                        group-hover:bg-white/20 group-hover:text-white transition"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"
+                        />
+
+                        <circle
+                            cx="9"
+                            cy="7"
+                            r="4"
+                            stroke-width="1.8"
+                        />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-width="1.8"
+                            d="M19 8v6M16 11h6"
+                        />
+                    </svg>
+                </div>
+
+                <div class="min-w-0">
+                    <p class="text-sm font-semibold text-gray-900 group-hover:text-white">
+                        Customer
+                    </p>
+
+                    <p class="text-xs text-gray-500 group-hover:text-emerald-100">
+                        Add new customer
+                    </p>
+                </div>
+
+            </a>
+
+
+            {{-- Repair Jobs --}}
+            <a
+                href="{{ route('repair-jobs.index') }}"
+                class="group flex items-center gap-3 rounded-xl border border-orange-100
+                    bg-orange-50/50 px-4 py-3.5
+                    hover:bg-orange-600 hover:border-orange-600
+                    transition-all duration-200"
+            >
+
+                <div
+                    class="w-10 h-10 shrink-0 rounded-lg bg-orange-100
+                        text-orange-600 flex items-center justify-center
+                        group-hover:bg-white/20 group-hover:text-white transition"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M14.7 6.3a4 4 0 01-5 5L4 17l3 3 5.7-5.7a4 4 0 015-5z"
+                        />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M15 4l5 5"
+                        />
+                    </svg>
+                </div>
+
+                <div class="min-w-0">
+                    <p class="text-sm font-semibold text-gray-900 group-hover:text-white">
+                        Repair Jobs
+                    </p>
+
+                    <p class="text-xs text-gray-500 group-hover:text-orange-100">
+                        Manage repairs
+                    </p>
+                </div>
+
+            </a>
+
+
+            {{-- New Order --}}
+            <a
+                href="{{ route('orders.create') }}"
+                class="group flex items-center gap-3 rounded-xl border border-violet-100
+                    bg-violet-50/50 px-4 py-3.5
+                    hover:bg-violet-600 hover:border-violet-600
+                    transition-all duration-200"
+            >
+
+                <div
+                    class="w-10 h-10 shrink-0 rounded-lg bg-violet-100
+                        text-violet-600 flex items-center justify-center
+                        group-hover:bg-white/20 group-hover:text-white transition"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M3 7h18M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"
+                        />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"
+                        />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M12 11v5M9.5 13.5h5"
+                        />
+                    </svg>
+                </div>
+
+                <div class="min-w-0">
+                    <p class="text-sm font-semibold text-gray-900 group-hover:text-white">
+                        New Order
+                    </p>
+
+                    <p class="text-xs text-gray-500 group-hover:text-violet-100">
+                        Order parts
+                    </p>
+                </div>
+
             </a>
 
         </div>
@@ -49,7 +251,7 @@
     {{-- MAIN STAT CARDS --}}
     {{-- ========================================================= --}}
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-6 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
 
         {{-- Today's Appointments --}}
 
@@ -234,26 +436,28 @@
 
         </a>
 
+        {{-- Orders --}}
 
-        {{-- Monthly Revenue --}}
-
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
+        <a
+            href="{{ route('orders.index') }}"
+            class="bg-white rounded-xl border border-gray-200 p-5 hover:border-indigo-300 hover:shadow-sm transition"
+        >
 
             <div class="flex items-start justify-between">
 
                 <div>
 
                     <p class="text-sm text-gray-500">
-                        Revenue This Month
+                        Orders
                     </p>
 
-                    <p class="text-2xl font-bold text-gray-900 mt-2">
-                        ₱{{ number_format($monthlyRevenue, 2) }}
+                    <p class="text-3xl font-bold text-gray-900 mt-2">
+                        {{ $totalOrders }}
                     </p>
 
                 </div>
 
-                <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
 
                     <svg
                         class="w-5 h-5"
@@ -265,7 +469,21 @@
                             stroke-linecap="round"
                             stroke-linejoin="round"
                             stroke-width="1.8"
-                            d="M12 2v20M17 6.5C17 4.6 15 3 12 3S7 4.6 7 6.5 9 10 12 10s5 1.5 5 3.5S15 17 12 17s-5-1.6-5-3.5"
+                            d="M3 7h18M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"
+                        />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"
+                        />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.8"
+                            d="M9 11h6M9 15h6"
                         />
                     </svg>
 
@@ -273,42 +491,101 @@
 
             </div>
 
-        </div>
+        </a>
 
 
-        {{-- Outstanding Balance --}}
+        {{-- ========================================================= --}}
+        {{-- FINANCIAL STAT CARDS --}}
+        {{-- ========================================================= --}}
 
-        <div class="bg-white rounded-xl border border-gray-200 p-5">
+        <div class="lg:col-span-5 grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            <div class="flex items-start justify-between">
+            {{-- Monthly Revenue --}}
 
-                <div>
+            <div class="bg-white rounded-xl border border-gray-200 p-6
+                        hover:border-emerald-300 hover:shadow-sm transition">
 
-                    <p class="text-sm text-gray-500">
-                        Outstanding Balance
-                    </p>
+                <div class="flex items-start justify-between">
 
-                    <p class="text-2xl font-bold text-gray-900 mt-2">
-                        ₱{{ number_format($outstandingBalance, 2) }}
-                    </p>
+                    <div>
+
+                        <p class="text-sm text-gray-500">
+                            Revenue This Month
+                        </p>
+
+                        <p class="text-3xl font-bold text-gray-900 mt-3">
+                            ₱{{ number_format($monthlyRevenue, 2) }}
+                        </p>
+
+                        <p class="text-xs text-gray-400 mt-2">
+                            Total revenue from released repairs
+                        </p>
+
+                    </div>
+
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+
+                        <svg
+                            class="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.8"
+                                d="M12 2v20M17 6.5C17 4.6 15 3 12 3S7 4.6 7 6.5 9 10 12 10s5 1.5 5 3.5S15 17 12 17s-5-1.6-5-3.5"
+                            />
+                        </svg>
+
+                    </div>
 
                 </div>
 
-                <div class="w-10 h-10 rounded-lg bg-yellow-50 text-yellow-600 flex items-center justify-center">
+            </div>
 
-                    <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.8"
-                            d="M12 8v4l3 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                    </svg>
+
+            {{-- Outstanding Balance --}}
+
+            <div class="bg-white rounded-xl border border-gray-200 p-6
+                        hover:border-yellow-300 hover:shadow-sm transition">
+
+                <div class="flex items-start justify-between">
+
+                    <div>
+
+                        <p class="text-sm text-gray-500">
+                            Outstanding Balance
+                        </p>
+
+                        <p class="text-3xl font-bold text-gray-900 mt-3">
+                            ₱{{ number_format($outstandingBalance, 2) }}
+                        </p>
+
+                        <p class="text-xs text-gray-400 mt-2">
+                            Unpaid repair balances
+                        </p>
+
+                    </div>
+
+                    <div class="w-12 h-12 rounded-xl bg-yellow-50 text-yellow-600 flex items-center justify-center">
+
+                        <svg
+                            class="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.8"
+                                d="M12 8v4l3 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+
+                    </div>
 
                 </div>
 
@@ -896,309 +1173,7 @@
         </div>
 
     </div>
-
-
-    {{-- ========================================================= --}}
-    {{-- INVENTORY + QUICK ACTIONS --}}
-    {{-- ========================================================= --}}
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-
-        {{-- Inventory Alert --}}
-
-        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
-
-            <div class="px-6 py-5 border-b border-gray-200 flex items-center justify-between">
-
-                <div>
-
-                    <h2 class="font-semibold text-gray-900">
-                        Inventory Alerts
-                    </h2>
-
-                    <p class="text-sm text-gray-500 mt-1">
-                        Parts that need attention.
-                    </p>
-
-                </div>
-
-                <a
-                    href="{{ route('parts.index') }}"
-                    class="text-sm font-medium text-blue-600 hover:text-blue-700"
-                >
-                    Inventory
-                </a>
-
-            </div>
-
-
-            <div class="p-6">
-
-                <div class="grid grid-cols-2 gap-4 mb-5">
-
-                    <div class="rounded-lg border border-orange-200 bg-orange-50 p-4">
-
-                        <p class="text-sm text-orange-700">
-                            Low Stock
-                        </p>
-
-                        <p class="text-2xl font-bold text-orange-900 mt-1">
-                            {{ $lowStockParts }}
-                        </p>
-
-                    </div>
-
-
-                    <div class="rounded-lg border border-red-200 bg-red-50 p-4">
-
-                        <p class="text-sm text-red-700">
-                            Out of Stock
-                        </p>
-
-                        <p class="text-2xl font-bold text-red-900 mt-1">
-                            {{ $outOfStockParts }}
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="divide-y divide-gray-100">
-
-                    @forelse($lowStockItems as $part)
-
-                        <div class="py-3 flex items-center justify-between gap-4">
-
-                            <div class="min-w-0">
-
-                                <p class="text-sm font-medium text-gray-900 truncate">
-                                    {{ $part->name }}
-                                </p>
-
-                                <p class="text-xs text-gray-500 mt-1">
-                                    Minimum stock:
-                                    {{ $part->minimum_stock }}
-                                </p>
-
-                            </div>
-
-                            <span
-                                class="flex-shrink-0 text-sm font-semibold {{ $part->stock_quantity <= 0 ? 'text-red-600' : 'text-orange-600' }}"
-                            >
-                                {{ $part->stock_quantity }}
-                            </span>
-
-                        </div>
-
-                    @empty
-
-                        <p class="text-sm text-gray-500 text-center py-4">
-                            Inventory looks good. No low-stock parts.
-                        </p>
-
-                    @endforelse
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        {{-- Quick Actions --}}
-
-        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
-
-            <div class="px-6 py-5 border-b border-gray-200">
-
-                <h2 class="font-semibold text-gray-900">
-                    Quick Actions
-                </h2>
-
-                <p class="text-sm text-gray-500 mt-1">
-                    Frequently used actions.
-                </p>
-
-            </div>
-
-
-            <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
-
-                {{-- New Customer --}}
-
-                <a
-                    href="{{ route('customers.create') }}"
-                    class="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition"
-                >
-
-                    <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-
-                        <svg
-                            class="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM19 8v6M22 11h-6"
-                            />
-                        </svg>
-
-                    </div>
-
-                    <div>
-
-                        <p class="text-sm font-medium text-gray-900">
-                            Add Customer
-                        </p>
-
-                        <p class="text-xs text-gray-500 mt-1">
-                            Register a new customer
-                        </p>
-
-                    </div>
-
-                </a>
-
-
-                {{-- New Appointment --}}
-
-                <a
-                    href="{{ route('appointments.create') }}"
-                    class="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition"
-                >
-
-                    <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
-
-                        <svg
-                            class="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <rect
-                                x="3"
-                                y="4"
-                                width="18"
-                                height="17"
-                                rx="2"
-                                stroke-width="1.8"
-                            />
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-width="1.8"
-                                d="M16 2v4M8 2v4M3 10h18"
-                            />
-                        </svg>
-
-                    </div>
-
-                    <div>
-
-                        <p class="text-sm font-medium text-gray-900">
-                            New Appointment
-                        </p>
-
-                        <p class="text-xs text-gray-500 mt-1">
-                            Schedule a repair
-                        </p>
-
-                    </div>
-
-                </a>
-
-
-                {{-- Repair Jobs --}}
-
-                <a
-                    href="{{ route('repair-jobs.index') }}"
-                    class="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition"
-                >
-
-                    <div class="w-10 h-10 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
-
-                        <svg
-                            class="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M14.7 6.3a4 4 0 01-5 5L4 17l3 3 5.7-5.7a4 4 0 015-5z"
-                            />
-                        </svg>
-
-                    </div>
-
-                    <div>
-
-                        <p class="text-sm font-medium text-gray-900">
-                            Repair Jobs
-                        </p>
-
-                        <p class="text-xs text-gray-500 mt-1">
-                            Manage ongoing repairs
-                        </p>
-
-                    </div>
-
-                </a>
-
-
-                {{-- Inventory --}}
-
-                <a
-                    href="{{ route('parts.index') }}"
-                    class="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition"
-                >
-
-                    <div class="w-10 h-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
-
-                        <svg
-                            class="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="1.8"
-                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"
-                            />
-                        </svg>
-
-                    </div>
-
-                    <div>
-
-                        <p class="text-sm font-medium text-gray-900">
-                            Inventory
-                        </p>
-
-                        <p class="text-xs text-gray-500 mt-1">
-                            Manage parts and stock
-                        </p>
-
-                    </div>
-
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
+    
 </div>
 
 @endsection

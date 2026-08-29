@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use App\Models\Part;
 use App\Models\RepairJob;
+use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -98,6 +99,13 @@ class DashboardController extends Controller
             0
         )->count();
 
+        /*
+        |--------------------------------------------------------------------------
+        | Order Statistics
+        |--------------------------------------------------------------------------
+        */
+
+        $totalOrders = Order::count();
 
         /*
         |--------------------------------------------------------------------------
@@ -189,6 +197,8 @@ class DashboardController extends Controller
 
             'lowStockParts',
             'outOfStockParts',
+
+            'totalOrders',
 
             'monthlyRevenue',
             'outstandingBalance',
