@@ -17,6 +17,9 @@ class Appointment extends Model
         'service',
         'problem_description',
         'estimated_cost',
+        'parts_breakdown',
+        'labor_cost',
+        'estimated_profit',
         'status',
         'payment_status',
         'notes',
@@ -24,9 +27,13 @@ class Appointment extends Model
 
     protected $casts = [
         'appointment_date' => 'date',
+        'appointment_time' => 'datetime:H:i',
+        'parts_breakdown' => 'array',
+        'labor_cost' => 'decimal:2',
         'estimated_cost' => 'decimal:2',
+        'estimated_profit' => 'decimal:2',
     ];
-
+    
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);

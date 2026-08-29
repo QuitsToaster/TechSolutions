@@ -64,7 +64,21 @@ class AppointmentController extends Controller
 
             'problem_description' => 'nullable|string',
 
+            'parts_breakdown' => 'nullable|array',
+
+            'parts_breakdown.*.name' => 'nullable|string|max:255',
+
+            'parts_breakdown.*.quantity' => 'nullable|numeric|min:0',
+
+            'parts_breakdown.*.unit_cost' => 'nullable|numeric|min:0',
+
+            'parts_breakdown.*.selling_price' => 'nullable|numeric|min:0',
+
+            'labor_cost' => 'nullable|numeric|min:0',
+
             'estimated_cost' => 'nullable|numeric|min:0',
+
+            'estimated_profit' => 'nullable|numeric',
 
             'status' => 'required|in:pending,confirmed,in_progress,completed,cancelled',
 
@@ -72,6 +86,65 @@ class AppointmentController extends Controller
 
             'notes' => 'nullable|string',
         ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Calculate estimated totals server-side
+        |--------------------------------------------------------------------------
+        */
+
+        $parts = $request->input('parts_breakdown', []);
+
+        $totalPartsCost = 0;
+        $totalPartsSelling = 0;
+
+        foreach ($parts as $part) {
+
+            $quantity = (float) ($part['quantity'] ?? 0);
+            $unitCost = (float) ($part['unit_cost'] ?? 0);
+            $sellingPrice = (float) ($part['selling_price'] ?? 0);
+
+            $totalPartsCost += $quantity * $unitCost;
+            $totalPartsSelling += $quantity * $sellingPrice;
+        }
+
+        $laborCost = (float) ($request->input('labor_cost') ?? 0);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Estimated customer charge
+        |--------------------------------------------------------------------------
+        |
+        | Parts selling price + labor
+        |
+        */
+
+        $estimatedTotal = $totalPartsSelling + $laborCost;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Estimated profit
+        |--------------------------------------------------------------------------
+        |
+        | Parts profit + labor
+        |
+        | Customer pays:
+        |     Parts Selling + Labor
+        |
+        | Your expense:
+        |     Parts Unit Cost
+        |
+        | Profit:
+        |     Parts Selling - Parts Cost + Labor
+        |
+        */
+
+        $estimatedProfit = $estimatedTotal - $totalPartsCost;
+
+        $validated['parts_breakdown'] = $parts;
+        $validated['labor_cost'] = $laborCost;
+        $validated['estimated_cost'] = $estimatedTotal;
+        $validated['estimated_profit'] = $estimatedProfit;
 
         Appointment::create($validated);
 
@@ -117,7 +190,21 @@ class AppointmentController extends Controller
 
             'problem_description' => 'nullable|string',
 
+            'parts_breakdown' => 'nullable|array',
+
+            'parts_breakdown.*.name' => 'nullable|string|max:255',
+
+            'parts_breakdown.*.quantity' => 'nullable|numeric|min:0',
+
+            'parts_breakdown.*.unit_cost' => 'nullable|numeric|min:0',
+
+            'parts_breakdown.*.selling_price' => 'nullable|numeric|min:0',
+
+            'labor_cost' => 'nullable|numeric|min:0',
+
             'estimated_cost' => 'nullable|numeric|min:0',
+
+            'estimated_profit' => 'nullable|numeric',
 
             'status' => 'required|in:pending,confirmed,in_progress,completed,cancelled',
 
@@ -125,6 +212,38 @@ class AppointmentController extends Controller
 
             'notes' => 'nullable|string',
         ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Calculate estimated totals server-side
+        |--------------------------------------------------------------------------
+        */
+
+        $parts = $request->input('parts_breakdown', []);
+
+        $totalPartsCost = 0;
+        $totalPartsSelling = 0;
+
+        foreach ($parts as $part) {
+
+            $quantity = (float) ($part['quantity'] ?? 0);
+            $unitCost = (float) ($part['unit_cost'] ?? 0);
+            $sellingPrice = (float) ($part['selling_price'] ?? 0);
+
+            $totalPartsCost += $quantity * $unitCost;
+            $totalPartsSelling += $quantity * $sellingPrice;
+        }
+
+        $laborCost = (float) ($request->input('labor_cost') ?? 0);
+
+        $estimatedTotal = $totalPartsSelling + $laborCost;
+
+        $estimatedProfit = $estimatedTotal - $totalPartsCost;
+
+        $validated['parts_breakdown'] = $parts;
+        $validated['labor_cost'] = $laborCost;
+        $validated['estimated_cost'] = $estimatedTotal;
+        $validated['estimated_profit'] = $estimatedProfit;
 
         $appointment->update($validated);
 
