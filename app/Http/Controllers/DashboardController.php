@@ -114,35 +114,25 @@ class DashboardController extends Controller
         */
 
         /*
-        * Monthly Revenue
+        * Total Estimated Profit
         *
-        * Only actual payments from released repairs
-        * released during the current month are included.
+        * Get the total estimated profit from ALL appointments.
+        *
+        * No date filter is applied.
+        * No status filter is applied.
+        * This uses appointments.estimated_profit.
         */
-        $monthlyRevenue = RepairJob::where(
-            'status',
-            'released'
-        )
-            ->whereMonth('released_at', now()->month)
-            ->whereYear('released_at', now()->year)
-            ->sum('amount_paid');
+        $totalEstimatedProfit = Appointment::sum('estimated_profit');
 
 
         /*
-        * Repair Jobs Included in Monthly Revenue
+        * Appointments Included in Total Estimated Profit
         *
-        * These are the actual repair jobs contributing
-        * to the Revenue This Month figure.
+        * Get all appointments that have an estimated profit.
         */
-        $monthlyRevenueJobs = RepairJob::with('customer')
-            ->where(
-                'status',
-                'released'
-            )
-            ->whereMonth('released_at', now()->month)
-            ->whereYear('released_at', now()->year)
-            ->where('amount_paid', '>', 0)
-            ->orderByDesc('released_at')
+        $estimatedProfitAppointments = Appointment::with('customer')
+            ->whereNotNull('estimated_profit')
+            ->orderByDesc('created_at')
             ->get();
 
 
@@ -246,10 +236,10 @@ class DashboardController extends Controller
 
             'totalOrders',
 
-            'monthlyRevenue',
+            'totalEstimatedProfit',
             'outstandingBalance',
 
-            'monthlyRevenueJobs',
+            'estimatedProfitAppointments',
             'outstandingBalanceJobs',
 
             'recentRepairJobs',
