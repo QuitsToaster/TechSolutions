@@ -1935,7 +1935,7 @@
 
                                     <p class="text-xs text-gray-400 mt-1">
 
-                                        {{ $history->created_at?->format('M d, Y h:i A') }}
+                                        {{ $history->created_at?->timezone('Asia/Manila')->format('M d, Y h:i A') }}
 
                                         @if($history->changedBy)
 
