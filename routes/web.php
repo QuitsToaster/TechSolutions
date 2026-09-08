@@ -54,3 +54,9 @@ Route::get('/orders', [OrderController::class, 'index'])
 
 Route::resource('price-lists', PriceListController::class)
     ->except(['show']);
+
+Route::get('/customer-information', [CustomerController::class, 'publicCreate'])
+    ->name('customers.public.create');
+
+Route::post('/customer-information', [CustomerController::class, 'publicStore'])
+    ->name('customers.public.store');

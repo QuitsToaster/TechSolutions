@@ -35,24 +35,87 @@
         </div>
 
 
-        <a
-            href="{{ route('customers.create') }}"
-            class="
-                inline-flex
-                items-center
-                justify-center
-                px-4
-                py-2.5
-                rounded-lg
-                bg-slate-900
-                hover:bg-slate-800
-                text-white
-                text-sm
-                font-medium
-            "
-        >
-            + Add Customer
-        </a>
+        <div class="flex flex-col sm:flex-row gap-2">
+
+            {{-- Copy Customer Form Link --}}
+            <button
+                type="button"
+                onclick="copyCustomerFormLink()"
+                class="
+                    inline-flex
+                    items-center
+                    justify-center
+                    gap-2
+                    px-4
+                    py-2.5
+                    rounded-lg
+                    border
+                    border-gray-300
+                    bg-white
+                    hover:bg-gray-50
+                    text-gray-700
+                    text-sm
+                    font-medium
+                    transition
+                "
+            >
+
+                <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 16H6a2 2 0 01-2-2V6
+                        a2 2 0 012-2h8
+                        a2 2 0 012 2v2"
+                    />
+
+                    <rect
+                        x="8"
+                        y="8"
+                        width="12"
+                        height="12"
+                        rx="2"
+                        ry="2"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+                </svg>
+
+                <span id="copyCustomerFormText">
+                    Copy Customer Form Link
+                </span>
+
+            </button>
+
+
+            {{-- Add Customer --}}
+            <a
+                href="{{ route('customers.create') }}"
+                class="
+                    inline-flex
+                    items-center
+                    justify-center
+                    px-4
+                    py-2.5
+                    rounded-lg
+                    bg-slate-900
+                    hover:bg-slate-800
+                    text-white
+                    text-sm
+                    font-medium
+                    transition
+                "
+            >
+                + Add Customer
+            </a>
+
+        </div>
 
     </div>
 
@@ -453,5 +516,51 @@
 
     </div>
 
+<script>
+
+    function copyCustomerFormLink() {
+
+        const link = "{{ route('customers.public.create') }}";
+
+        navigator.clipboard.writeText(link)
+            .then(function () {
+
+                const text = document.getElementById('copyCustomerFormText');
+
+                text.textContent = 'Link Copied!';
+
+                setTimeout(function () {
+                    text.textContent = 'Copy Customer Form Link';
+                }, 2000);
+
+            })
+            .catch(function () {
+
+                // Fallback for browsers that block clipboard access
+                const textarea = document.createElement('textarea');
+
+                textarea.value = link;
+
+                document.body.appendChild(textarea);
+
+                textarea.select();
+
+                document.execCommand('copy');
+
+                document.body.removeChild(textarea);
+
+                const text = document.getElementById('copyCustomerFormText');
+
+                text.textContent = 'Link Copied!';
+
+                setTimeout(function () {
+                    text.textContent = 'Copy Customer Form Link';
+                }, 2000);
+
+            });
+
+    }
+
+</script>
 
 @endsection

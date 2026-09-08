@@ -42,6 +42,38 @@ class CustomerController extends Controller
     }
 
     /**
+     * Show the public customer information form.
+     */
+    public function publicCreate()
+    {
+        return view('customers.public-form');
+    }
+
+    /**
+     * Store customer information submitted through the public form.
+     */
+    public function publicStore(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+
+            'contact_number' => ['required', 'string', 'max:50'],
+
+            'email' => ['nullable', 'email', 'max:255'],
+
+            'address' => ['required', 'string'],
+
+            'facebook' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        Customer::create($validated);
+
+        return redirect()
+            ->route('customers.public.create')
+            ->with('success', 'Your information has been submitted successfully. Thank you!');
+    }
+
+    /**
      * Store a newly created customer.
      */
     public function store(Request $request)
