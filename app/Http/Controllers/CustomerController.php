@@ -64,7 +64,11 @@ class CustomerController extends Controller
             'address' => ['required', 'string'],
 
             'facebook' => ['nullable', 'string', 'max:255'],
+
+            'privacy_consent' => ['required', 'accepted'],
         ]);
+
+        unset($validated['privacy_consent']);
 
         Customer::create($validated);
 

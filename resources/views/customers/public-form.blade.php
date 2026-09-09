@@ -389,12 +389,20 @@
 
                 {{-- Form --}}
                 <form
+                    id="customerInformationForm"
                     action="{{ route('customers.public.store') }}"
                     method="POST"
                     class="p-6 sm:p-8 space-y-6"
                 >
 
                     @csrf
+
+                    <input
+                        type="hidden"
+                        name="privacy_consent"
+                        id="privacyConsentValue"
+                        value=""
+                    >
 
 
                     {{-- =========================================
@@ -720,13 +728,7 @@
                                    mb-2"
                         >
                             Facebook Account
-
-                            <span
-                                class="text-gray-400
-                                       font-normal"
-                            >
-                                (Optional)
-                            </span>
+                            <span class="text-red-500">*</span>
 
                         </label>
 
@@ -736,6 +738,7 @@
                             name="facebook"
                             value="{{ old('facebook') }}"
                             placeholder="Facebook name or profile link"
+                            required
                             autocomplete="off"
                             class="w-full
                                    rounded-lg
@@ -858,26 +861,27 @@
 
                         <button
                             type="submit"
+                            id="submitInformationButton"
                             class="w-full
-                                   inline-flex
-                                   items-center
-                                   justify-center
-                                   gap-2
-                                   px-5
-                                   py-3.5
-                                   rounded-lg
-                                   bg-gray-900
-                                   hover:bg-gray-800
-                                   active:bg-gray-950
-                                   text-white
-                                   text-sm
-                                   font-semibold
-                                   shadow-sm
-                                   transition
-                                   focus:outline-none
-                                   focus:ring-2
-                                   focus:ring-gray-900
-                                   focus:ring-offset-2"
+                                inline-flex
+                                items-center
+                                justify-center
+                                gap-2
+                                px-5
+                                py-3.5
+                                rounded-lg
+                                bg-gray-900
+                                hover:bg-gray-800
+                                active:bg-gray-950
+                                text-white
+                                text-sm
+                                font-semibold
+                                shadow-sm
+                                transition
+                                focus:outline-none
+                                focus:ring-2
+                                focus:ring-gray-900
+                                focus:ring-offset-2"
                         >
 
                             <svg
@@ -891,7 +895,7 @@
                                     stroke-linejoin="round"
                                     stroke-width="2"
                                     d="M5 12h14
-                                       M12 5l7 7-7 7"
+                                    M12 5l7 7-7 7"
                                 />
                             </svg>
 
@@ -952,6 +956,580 @@
     </footer>
 
 </div>
+
+    </footer>
+
+</div>
+
+
+{{-- =========================================================
+    DATA PRIVACY NOTICE MODAL
+========================================================= --}}
+<div
+    id="privacyModal"
+    class="fixed inset-0 z-50 hidden"
+    aria-labelledby="privacyModalTitle"
+    aria-modal="true"
+    role="dialog"
+>
+
+    {{-- Backdrop --}}
+    <div
+        id="privacyModalBackdrop"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm"
+    ></div>
+
+
+    {{-- Modal Container --}}
+    <div
+        class="relative z-10 flex min-h-full items-center justify-center p-4 sm:p-6"
+    >
+
+        <div
+            class="w-full max-w-2xl
+                   rounded-2xl
+                   bg-white
+                   shadow-2xl
+                   border border-gray-200
+                   overflow-hidden"
+        >
+
+            {{-- Modal Header --}}
+            <div
+                class="px-6 sm:px-8
+                       py-5
+                       border-b border-gray-200
+                       bg-gray-50"
+            >
+
+                <div class="flex items-start gap-4">
+
+                    <div
+                        class="flex-shrink-0
+                               flex items-center justify-center
+                               w-11 h-11
+                               rounded-xl
+                               bg-gray-900
+                               text-white"
+                    >
+
+                        <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 15v2m-6 4h12
+                                   a2 2 0 002-2V9
+                                   a8 8 0 10-16 0v10
+                                   a2 2 0 002 2z"
+                            />
+                        </svg>
+
+                    </div>
+
+
+                    <div class="flex-1">
+
+                        <h2
+                            id="privacyModalTitle"
+                            class="text-lg
+                                   sm:text-xl
+                                   font-bold
+                                   text-gray-900"
+                        >
+                            Data Privacy Notice
+                        </h2>
+
+                        <p
+                            class="mt-1
+                                   text-xs
+                                   sm:text-sm
+                                   text-gray-500"
+                        >
+                            Please review this notice before submitting
+                            your information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {{-- Modal Content --}}
+            <div
+                class="px-6 sm:px-8
+                       py-6
+                       max-h-[60vh]
+                       overflow-y-auto"
+            >
+
+                <div class="space-y-5">
+
+                    {{-- Introduction --}}
+                    <div>
+
+                        <p
+                            class="text-sm
+                                   leading-6
+                                   text-gray-600"
+                        >
+                            At <strong class="text-gray-900">TechSolutions</strong>,
+                            we respect your privacy and are committed to
+                            protecting your personal information.
+                        </p>
+
+                    </div>
+
+
+                    {{-- Information Collected --}}
+                    <div>
+
+                        <h3
+                            class="text-sm
+                                   font-semibold
+                                   text-gray-900
+                                   mb-2"
+                        >
+                            Information We Collect
+                        </h3>
+
+                        <p
+                            class="text-sm
+                                   leading-6
+                                   text-gray-600"
+                        >
+                            The information you provide, including your
+                            name, contact number, email address, address,
+                            and Facebook account information, may be
+                            collected for the purpose of processing and
+                            managing your repair service.
+                        </p>
+
+                    </div>
+
+
+                    {{-- Purpose --}}
+                    <div>
+
+                        <h3
+                            class="text-sm
+                                   font-semibold
+                                   text-gray-900
+                                   mb-2"
+                        >
+                            How We Use Your Information
+                        </h3>
+
+                        <p
+                            class="text-sm
+                                   leading-6
+                                   text-gray-600"
+                        >
+                            Your information may be used to contact you
+                            regarding your repair appointment, provide
+                            updates about your device, process your
+                            repair service, maintain customer records,
+                            and provide after-sales or warranty support.
+                        </p>
+
+                    </div>
+
+
+                    {{-- Protection --}}
+                    <div>
+
+                        <h3
+                            class="text-sm
+                                   font-semibold
+                                   text-gray-900
+                                   mb-2"
+                        >
+                            Protection of Your Information
+                        </h3>
+
+                        <p
+                            class="text-sm
+                                   leading-6
+                                   text-gray-600"
+                        >
+                            TechSolutions will take reasonable measures
+                            to protect your personal information from
+                            unauthorized access, disclosure, alteration,
+                            or misuse.
+                        </p>
+
+                    </div>
+
+
+                    {{-- Sharing --}}
+                    <div>
+
+                        <h3
+                            class="text-sm
+                                   font-semibold
+                                   text-gray-900
+                                   mb-2"
+                        >
+                            Disclosure of Information
+                        </h3>
+
+                        <p
+                            class="text-sm
+                                   leading-6
+                                   text-gray-600"
+                        >
+                            Your personal information will not be sold
+                            or disclosed to unrelated third parties
+                            except when necessary to provide the
+                            requested service, comply with applicable
+                            laws, or when otherwise permitted by law.
+                        </p>
+
+                    </div>
+
+
+                    {{-- Consent --}}
+                    <div
+                        class="rounded-xl
+                               border border-gray-200
+                               bg-gray-50
+                               p-4"
+                    >
+
+                        <div class="flex items-start gap-3">
+
+                            <input
+                                type="checkbox"
+                                id="privacy_consent"
+                                class="mt-1
+                                    h-4
+                                    w-4
+                                    rounded
+                                    border-gray-300
+                                    text-gray-900
+                                    focus:ring-gray-900"
+                            >
+
+                            <label
+                                for="privacy_consent"
+                                class="text-sm
+                                       leading-6
+                                       text-gray-700
+                                       cursor-pointer"
+                            >
+                                I have read and understood the Data
+                                Privacy Notice. I consent to TechSolutions
+                                collecting and processing the personal
+                                information I provide for the purposes
+                                stated above.
+                                <span class="text-red-500">*</span>
+                            </label>
+
+                        </div>
+
+
+                        <p
+                            id="privacyConsentError"
+                            class="hidden
+                                   mt-2
+                                   ml-7
+                                   text-xs
+                                   font-medium
+                                   text-red-600"
+                        >
+                            Please check the box to confirm that you
+                            understand and agree to the privacy notice.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {{-- Modal Footer --}}
+            <div
+                class="px-6 sm:px-8
+                       py-4
+                       border-t border-gray-200
+                       bg-gray-50"
+            >
+
+                <div
+                    class="flex
+                           flex-col-reverse
+                           sm:flex-row
+                           sm:justify-end
+                           gap-3"
+                >
+
+                    {{-- Cancel --}}
+                    <button
+                        type="button"
+                        id="cancelPrivacyButton"
+                        class="w-full
+                               sm:w-auto
+                               inline-flex
+                               items-center
+                               justify-center
+                               px-5
+                               py-2.5
+                               rounded-lg
+                               border border-gray-300
+                               bg-white
+                               text-gray-700
+                               text-sm
+                               font-semibold
+                               hover:bg-gray-50
+                               transition"
+                    >
+                        Go Back
+                    </button>
+
+
+                    {{-- Confirm --}}
+                    <button
+                        type="button"
+                        id="confirmPrivacyButton"
+                        class="w-full
+                               sm:w-auto
+                               inline-flex
+                               items-center
+                               justify-center
+                               gap-2
+                               px-5
+                               py-2.5
+                               rounded-lg
+                               bg-gray-900
+                               text-white
+                               text-sm
+                               font-semibold
+                               hover:bg-gray-800
+                               transition"
+                    >
+
+                        <svg
+                            class="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M5 13l4 4L19 7"
+                            />
+                        </svg>
+
+                        Continue & Submit
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{{-- =========================================================
+    PRIVACY MODAL JAVASCRIPT
+========================================================= --}}
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const form = document.getElementById('customerInformationForm');
+
+    const modal = document.getElementById('privacyModal');
+
+    const backdrop = document.getElementById('privacyModalBackdrop');
+
+    const cancelButton = document.getElementById('cancelPrivacyButton');
+
+    const confirmButton = document.getElementById('confirmPrivacyButton');
+
+    const privacyCheckbox = document.getElementById('privacy_consent');
+
+    const privacyConsentValue = document.getElementById('privacyConsentValue');
+
+    const privacyError = document.getElementById('privacyConsentError');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Open Privacy Modal
+    |--------------------------------------------------------------------------
+    */
+
+    form.addEventListener('submit', function (event) {
+
+        /*
+         * Stop the form from being submitted immediately.
+         * The customer must first review the privacy notice.
+         */
+
+        event.preventDefault();
+
+
+        /*
+         * Make sure the modal is visible.
+         */
+
+        modal.classList.remove('hidden');
+
+        document.body.classList.add('overflow-hidden');
+
+
+        /*
+         * Reset previous error message.
+         */
+
+        privacyError.classList.add('hidden');
+
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Close Modal
+    |--------------------------------------------------------------------------
+    */
+
+    function closePrivacyModal() {
+
+        modal.classList.add('hidden');
+
+        document.body.classList.remove('overflow-hidden');
+
+    }
+
+
+    cancelButton.addEventListener('click', function () {
+
+        closePrivacyModal();
+
+    });
+
+
+    backdrop.addEventListener('click', function () {
+
+        closePrivacyModal();
+
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Confirm Privacy Consent
+    |--------------------------------------------------------------------------
+    */
+
+    confirmButton.addEventListener('click', function () {
+
+        /*
+        * Make sure the customer checked the consent checkbox.
+        */
+
+        if (!privacyCheckbox.checked) {
+
+            privacyError.classList.remove('hidden');
+
+            privacyCheckbox.focus();
+
+            return;
+
+        }
+
+
+        /*
+        * Store the customer's consent in the
+        * hidden form field.
+        */
+
+        privacyConsentValue.value = '1';
+
+
+        /*
+        * Hide the error message.
+        */
+
+        privacyError.classList.add('hidden');
+
+
+        /*
+        * Prevent multiple clicks.
+        */
+
+        confirmButton.disabled = true;
+
+        confirmButton.classList.add(
+            'opacity-60',
+            'cursor-not-allowed'
+        );
+
+
+        /*
+        * Submit the form.
+        */
+
+        form.submit();
+
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hide Consent Error When Checkbox Is Checked
+    |--------------------------------------------------------------------------
+    */
+
+    privacyCheckbox.addEventListener('change', function () {
+
+        if (privacyCheckbox.checked) {
+
+            privacyError.classList.add('hidden');
+
+        }
+
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ESC Key
+    |--------------------------------------------------------------------------
+    */
+
+    document.addEventListener('keydown', function (event) {
+
+        if (
+            event.key === 'Escape' &&
+            !modal.classList.contains('hidden')
+        ) {
+
+            closePrivacyModal();
+
+        }
+
+    });
+
+});
+
+</script>
 
 </body>
 </html>
